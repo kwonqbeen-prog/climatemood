@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from './Icon'
 
 export default function AuthScreen({ auth }) {
   const [mode, setMode] = useState('login') // 'login' | 'signup'
@@ -23,7 +24,7 @@ export default function AuthScreen({ auth }) {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-gradient-to-b from-leaf-50 to-sky-50 px-6">
       <div className="w-full max-w-xs text-center">
-        <div className="text-5xl">🌱</div>
+        <Icon name="eco" className="text-5xl text-leaf-500" />
         <h1 className="mt-3 text-xl font-bold text-leaf-900">새싹</h1>
         <p className="mt-1 text-sm font-medium text-leaf-600">기후 마음 케어</p>
 

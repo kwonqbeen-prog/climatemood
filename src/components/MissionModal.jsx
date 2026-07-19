@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { CATEGORY_META, DIFFICULTY_OPTIONS } from '../data/constants'
+import { DIFFICULTY_OPTIONS } from '../data/constants'
+import Icon from './Icon'
 
 export default function MissionModal({ mission, onClose, onComplete }) {
   const [pickingDifficulty, setPickingDifficulty] = useState(false)
   if (!mission) return null
-  const meta = CATEGORY_META[mission.category] ?? { emoji: '🌱' }
 
   return (
     <div
@@ -12,14 +12,20 @@ export default function MissionModal({ mission, onClose, onComplete }) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl animate-pop-in"
+        className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl animate-pop-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-2 text-xs font-semibold text-leaf-500">
-          <span className="text-lg">{meta.emoji}</span>
-          <span>{mission.category}</span>
-        </div>
-        <h3 className="mt-2 text-lg font-bold text-leaf-900">{mission.title}</h3>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="닫기"
+          className="absolute right-4 top-4 text-leaf-300 transition hover:text-leaf-600"
+        >
+          <Icon name="close" className="text-xl" />
+        </button>
+
+        <p className="text-xs font-semibold text-leaf-500">{mission.category}</p>
+        <h3 className="mt-2 text-lg font-bold text-leaf-900 pr-6">{mission.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-leaf-700">{mission.description}</p>
 
         {mission.isCompleted ? (
@@ -51,14 +57,6 @@ export default function MissionModal({ mission, onClose, onComplete }) {
             완료했어요
           </button>
         )}
-
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-3 w-full rounded-lg py-2 text-sm text-leaf-400 hover:text-leaf-600"
-        >
-          닫기
-        </button>
       </div>
     </div>
   )

@@ -3,6 +3,7 @@ import ChatBubble from './ChatBubble'
 import TypingIndicator from './TypingIndicator'
 import MissionCard from './MissionCard'
 import MissionModal from './MissionModal'
+import Icon from './Icon'
 
 export default function ChatScreen({ conv }) {
   const { messages, loading, apiDegraded, todayMissionExists, start, sendMessage, requestMissionFlow, completeMissionWithFeedback } = conv
@@ -36,7 +37,7 @@ export default function ChatScreen({ conv }) {
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-leaf-50">
       <header className="sticky top-0 z-30 border-b border-leaf-100 bg-white/95 px-4 py-3 text-center backdrop-blur">
-        <span className="text-sm font-bold text-leaf-800">🌱 새싹과의 대화</span>
+        <span className="text-sm font-bold text-leaf-800">새싹과의 대화</span>
       </header>
 
       {apiDegraded && (
@@ -53,9 +54,9 @@ export default function ChatScreen({ conv }) {
               <button
                 type="button"
                 onClick={requestMissionFlow}
-                className="flex items-center gap-2 rounded-xl border border-leaf-300 bg-white px-4 py-3 text-left text-sm font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-[0.98]"
+                className="rounded-xl border border-leaf-300 bg-white px-4 py-3 text-left text-sm font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-[0.98]"
               >
-                🌱 오늘의 맞춤 미션 받기
+                오늘의 맞춤 미션 받기
               </button>
             )}
             {msg.type === 'missions' && (
@@ -105,9 +106,10 @@ export default function ChatScreen({ conv }) {
           <button
             type="submit"
             disabled={!input.trim() || loading}
-            className="shrink-0 rounded-full bg-leaf-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-leaf-600 disabled:bg-leaf-200"
+            aria-label="전송"
+            className="flex shrink-0 items-center justify-center rounded-full bg-leaf-500 p-2.5 text-white transition hover:bg-leaf-600 disabled:bg-leaf-200"
           >
-            전송
+            <Icon name="arrow_upward" className="text-xl" />
           </button>
         </div>
       </form>

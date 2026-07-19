@@ -1,7 +1,6 @@
-import { CATEGORY_META } from '../data/constants'
+import Icon from './Icon'
 
 export default function MissionCard({ mission, onClick }) {
-  const meta = CATEGORY_META[mission.category] ?? { emoji: '🌱' }
   return (
     <button
       type="button"
@@ -12,15 +11,14 @@ export default function MissionCard({ mission, onClick }) {
           : 'border-leaf-200 bg-white hover:border-leaf-400 hover:shadow-md'
       }`}
     >
-      <span className="text-xl">{meta.emoji}</span>
       <span className="flex-1 min-w-0">
         <span className="block text-sm font-semibold text-leaf-900 truncate">{mission.title}</span>
         <span className="block text-xs text-leaf-500">{mission.category}</span>
       </span>
       {mission.isCompleted ? (
-        <span className="text-xs font-semibold text-leaf-500">완료 ✓</span>
+        <Icon name="check_circle" filled className="text-leaf-500" />
       ) : (
-        <span className="text-leaf-300">›</span>
+        <Icon name="chevron_right" className="text-leaf-300" />
       )}
     </button>
   )

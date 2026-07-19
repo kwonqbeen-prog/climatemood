@@ -106,6 +106,6 @@ export function encouragementPrompt({ missionTitle, difficulty, displayName }) {
     `지금은 미션 완료 축하 단계입니다. 사용자가 "${missionTitle}" 미션을 완료했고, 체감 난이도는 "${difficulty}"였습니다.${
       displayName ? ` 사용자를 "${displayName}님"이라고 불러도 좋습니다.` : ''
     } 짧고 진심 어린 축하와 응원의 메시지를 생성하세요.`,
-    { message: '정말 잘하셨어요! 작은 실천이 모여 큰 변화를 만듭니다 🌱' },
+    { message: '정말 잘하셨어요! 작은 실천이 모여 큰 변화를 만듭니다.' },
   )
 }
