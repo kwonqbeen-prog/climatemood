@@ -1,6 +1,6 @@
 const TABS = [
-  { key: 'chat', label: '대화', icon: '💬' },
-  { key: 'dashboard', label: '기록', icon: '📋' },
+  { key: 'chat', label: '대화' },
+  { key: 'dashboard', label: '기록' },
 ]
 
 export default function NavBar({ active, onChange }) {
@@ -11,11 +11,12 @@ export default function NavBar({ active, onChange }) {
           key={tab.key}
           type="button"
           onClick={() => onChange(tab.key)}
-          className={`flex flex-1 flex-col items-center gap-0.5 py-2.5 text-xs font-semibold transition ${
-            active === tab.key ? 'text-leaf-600' : 'text-leaf-300'
+          className={`flex-1 border-t-2 py-3.5 text-sm font-semibold transition ${
+            active === tab.key
+              ? 'border-leaf-500 text-leaf-600'
+              : 'border-transparent text-leaf-300'
           }`}
         >
-          <span className="text-lg leading-none">{tab.icon}</span>
           {tab.label}
         </button>
       ))}

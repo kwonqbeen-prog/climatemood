@@ -1,7 +1,9 @@
+import Icon from './Icon'
+
 export default function StartScreen({ onStart }) {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-gradient-to-b from-leaf-50 to-sky-50 px-6 text-center">
-      <div className="text-6xl">🌱</div>
+      <Icon name="eco" className="text-6xl text-leaf-500" />
       <h1 className="mt-4 text-2xl font-bold text-leaf-900">새싹</h1>
       <p className="mt-2 text-sm font-medium text-leaf-600">기후 마음 케어</p>
       <p className="mx-auto mt-6 max-w-xs text-sm leading-relaxed text-leaf-700">

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import StartScreen from './components/StartScreen'
+import Icon from './components/Icon'
 import ChatScreen from './components/ChatScreen'
 import DashboardScreen from './components/DashboardScreen'
 import NavBar from './components/NavBar'
@@ -17,7 +18,7 @@ function App() {
   if (auth.loading) {
     return (
       <div className="flex min-h-svh items-center justify-center bg-leaf-50">
-        <div className="text-2xl">🌱</div>
+        <Icon name="progress_activity" className="animate-spin text-3xl text-leaf-400" />
       </div>
     )
   }

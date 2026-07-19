@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CATEGORY_META } from '../data/constants'
+import Icon from './Icon'
 import {
   addMissions,
   getCompletedHistory,
@@ -49,9 +49,10 @@ export default function DashboardScreen({ onSignOut }) {
         <button
           type="button"
           onClick={onSignOut}
-          className="absolute right-0 text-xs font-semibold text-leaf-400"
+          aria-label="로그아웃"
+          className="absolute right-0 text-leaf-400 transition hover:text-leaf-600"
         >
-          로그아웃
+          <Icon name="logout" />
         </button>
       </header>
 
@@ -75,7 +76,6 @@ export default function DashboardScreen({ onSignOut }) {
           <div className="space-y-2">
             {stats.incomplete.map((mission) => (
               <div key={mission.id} className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm">
-                <span className="text-xl">{CATEGORY_META[mission.category]?.emoji ?? '🌱'}</span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold text-leaf-900">{mission.title}</p>
                   <p className="text-xs text-leaf-500">{mission.category}</p>
@@ -86,7 +86,7 @@ export default function DashboardScreen({ onSignOut }) {
                   disabled={justAdded === mission.id}
                   className="shrink-0 rounded-full bg-leaf-500 px-3 py-1.5 text-xs font-bold text-white disabled:bg-leaf-300"
                 >
-                  {justAdded === mission.id ? '추가됨 ✓' : '다시 도전'}
+                  {justAdded === mission.id ? '추가됨' : '다시 도전'}
                 </button>
               </div>
             ))}
@@ -104,14 +104,13 @@ export default function DashboardScreen({ onSignOut }) {
           <div className="space-y-2">
             {stats.history.map((mission) => (
               <div key={mission.id} className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm">
-                <span className="text-xl">{CATEGORY_META[mission.category]?.emoji ?? '🌱'}</span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold text-leaf-900">{mission.title}</p>
                   <p className="text-xs text-leaf-500">
                     {mission.createdDate} · 체감 난이도 {mission.difficultyFeedback}
                   </p>
                 </div>
-                <span className="shrink-0 text-xs font-semibold text-leaf-500">완료 ✓</span>
+                <Icon name="check_circle" filled className="shrink-0 text-leaf-500" />
               </div>
             ))}
           </div>

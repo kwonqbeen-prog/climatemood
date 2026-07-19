@@ -308,7 +308,7 @@ export function useConversation({ displayName } = {}) {
       } catch (err) {
         console.error('응원 메시지 생성 실패, 기본 메시지로 대체합니다.', err)
         setApiDegraded(true)
-        result = { message: '정말 잘하셨어요! 작은 실천이 모여 큰 변화를 만듭니다 🌱' }
+        result = { message: '정말 잘하셨어요! 작은 실천이 모여 큰 변화를 만듭니다.' }
       }
       setLoading(false)
       pushMessage({ role: 'ai', type: 'text', text: result.message })

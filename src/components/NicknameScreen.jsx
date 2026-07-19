@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from './Icon'
 
 export default function NicknameScreen({ auth }) {
   const [displayName, setDisplayName] = useState('')
@@ -15,7 +16,7 @@ export default function NicknameScreen({ auth }) {
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-gradient-to-b from-leaf-50 to-sky-50 px-6 text-center">
-      <div className="text-5xl">🌱</div>
+      <Icon name="eco" className="text-5xl text-leaf-500" />
       <h1 className="mt-3 text-xl font-bold text-leaf-900">반가워요!</h1>
       <p className="mt-2 text-sm text-leaf-600">새싹이 뭐라고 불러드리면 좋을까요?</p>
 
