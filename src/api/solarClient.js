@@ -1,6 +1,4 @@
-const BASE_URL = 'https://api.upstage.ai/v1'
-const MODEL = 'solar-pro3'
-const API_KEY = import.meta.env.VITE_UPSTAGE_API_KEY
+import { supabase } from '../lib/supabaseClient'
 
 function stripCodeFence(text) {
   const trimmed = text.trim()
@@ -22,40 +20,22 @@ function extractJsonObject(text) {
   }
 }
 
+// Solar(Upstage) API는 더 이상 브라우저에서 직접 호출하지 않습니다.
+// API 키 노출을 막기 위해 Supabase Edge Function(solar-proxy)을 경유합니다.
 export async function askSolar({ systemPrompt, userMessage, history = [] }) {
-  if (!API_KEY) {
-    throw new Error('VITE_UPSTAGE_API_KEY가 설정되어 있지 않습니다.')
-  }
-
-  const messages = [
-    { role: 'system', content: systemPrompt },
-    ...history,
-    { role: 'user', content: userMessage },
-  ]
-
-  const res = await fetch(`${BASE_URL}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages,
-      response_format: { type: 'json_object' },
-      temperature: 0.8,
-    }),
+  const { data, error } = await supabase.functions.invoke('solar-proxy', {
+    body: { systemPrompt, userMessage, history },
   })
 
-  if (!res.ok) {
-    const detail = await res.text().catch(() => '')
-    throw new Error(`Solar API 오류 (${res.status}): ${detail.slice(0, 200)}`)
+  if (error) {
+    throw new Error(`Solar API 프록시 호출 실패: ${error.message}`)
   }
-
-  const data = await res.json()
-  const content = data?.choices?.[0]?.message?.content
-  if (!content) {
+  if (data?.error) {
+    throw new Error(data.error)
+  }
+  if (!data?.content) {
     throw new Error('Solar 응답에 내용이 없습니다.')
   }
-  return extractJsonObject(content)
+
+  return extractJsonObject(data.content)
 }

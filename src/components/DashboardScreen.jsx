@@ -9,35 +9,50 @@ import {
   getTotalCompletedCount,
 } from '../data/storage'
 
-function loadStats() {
+async function loadStats() {
+  const [todayMissions, todayCompleted, total, history, incompleteAll] = await Promise.all([
+    getTodayMissions(),
+    getTodayCompletedCount(),
+    getTotalCompletedCount(),
+    getCompletedHistory(),
+    getIncompleteMissions(),
+  ])
   return {
-    todayMissions: getTodayMissions(),
-    todayCompleted: getTodayCompletedCount(),
-    total: getTotalCompletedCount(),
-    history: getCompletedHistory(),
-    incomplete: getIncompleteMissions().slice(0, 3),
+    todayMissions,
+    todayCompleted,
+    total,
+    history,
+    incomplete: incompleteAll.slice(0, 3),
   }
 }
 
-export default function DashboardScreen() {
-  const [stats, setStats] = useState(loadStats)
+const EMPTY_STATS = { todayMissions: [], todayCompleted: 0, total: 0, history: [], incomplete: [] }
+
+export default function DashboardScreen({ onSignOut }) {
+  const [stats, setStats] = useState(EMPTY_STATS)
   const [justAdded, setJustAdded] = useState(null)
 
   useEffect(() => {
-    setStats(loadStats())
+    loadStats().then(setStats)
   }, [])
 
-  const retryMission = (mission) => {
-    addMissions([{ title: mission.title, description: mission.description, category: mission.category }])
-    setStats(loadStats())
+  const retryMission = async (mission) => {
+    await addMissions([{ title: mission.title, description: mission.description, category: mission.category }])
+    setStats(await loadStats())
     setJustAdded(mission.id)
     setTimeout(() => setJustAdded(null), 2000)
   }
-
   return (
     <div className="min-h-svh flex-1 space-y-6 bg-leaf-50 px-4 py-6">
-      <header className="text-center">
+      <header className="flex items-center justify-center text-center relative">
         <h1 className="text-lg font-bold text-leaf-900">나의 기록</h1>
+        <button
+          type="button"
+          onClick={onSignOut}
+          className="absolute right-0 text-xs font-semibold text-leaf-400"
+        >
+          로그아웃
+        </button>
       </header>
 
       <div className="grid grid-cols-2 gap-3">

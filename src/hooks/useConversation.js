@@ -79,7 +79,8 @@ export function useConversation() {
       setStage('loading_missions')
 
       const count = missionCountFor(key)
-      const offset = getSessions().length % 4
+      const existingSessions = await getSessions()
+      const offset = existingSessions.length % 4
       const categoryPlan = getCategoryPlan(count, offset)
 
       const result = await runStage(
@@ -92,8 +93,8 @@ export function useConversation() {
         ? result.missions
         : pickFallbackMissions(categoryPlan)
 
-      const savedMissions = addMissions(missionDrafts)
-      addSession({ emotionType: emotionKey, energyLevel: key, missionCount: savedMissions.length })
+      const savedMissions = await addMissions(missionDrafts)
+      await addSession({ emotionType: emotionKey, energyLevel: key, missionCount: savedMissions.length })
 
       pushMessage({ role: 'ai', type: 'missions', text: result.message, missions: savedMissions })
       setStage('awaiting_mission_interaction')
@@ -103,7 +104,7 @@ export function useConversation() {
 
   const completeMissionWithFeedback = useCallback(
     async (missionId, difficulty) => {
-      const updated = completeMission(missionId, difficulty)
+      const updated = await completeMission(missionId, difficulty)
       setMessages((prev) =>
         prev.map((msg) =>
           msg.type === 'missions'

@@ -1,86 +1,124 @@
-const MISSIONS_KEY = 'climatemood.missions'
-const SESSIONS_KEY = 'climatemood.sessions'
-
-function readJSON(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key)
-    return raw ? JSON.parse(raw) : fallback
-  } catch {
-    return fallback
-  }
-}
-
-function writeJSON(key, value) {
-  localStorage.setItem(key, JSON.stringify(value))
-}
+import { supabase } from '../lib/supabaseClient'
 
 export function todayISO() {
   return new Date().toISOString().slice(0, 10)
 }
 
-function makeId() {
-  return typeof crypto !== 'undefined' && crypto.randomUUID
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+async function getUserId() {
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data?.user) {
+    throw new Error('로그인이 필요합니다.')
+  }
+  return data.user.id
 }
 
-export function getMissions() {
-  return readJSON(MISSIONS_KEY, [])
+function toMission(row) {
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description,
+    category: row.category,
+    createdDate: row.created_date,
+    isCompleted: row.is_completed,
+    difficultyFeedback: row.difficulty_feedback,
+  }
 }
 
-export function addMissions(missionDrafts) {
-  const created = missionDrafts.map((m) => ({
-    id: makeId(),
+export async function getMissions() {
+  const userId = await getUserId()
+  const { data, error } = await supabase
+    .from('missions')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true })
+  if (error) throw error
+  return data.map(toMission)
+}
+
+export async function addMissions(missionDrafts) {
+  const userId = await getUserId()
+  const today = todayISO()
+  const rows = missionDrafts.map((m) => ({
+    user_id: userId,
     title: m.title,
     description: m.description,
     category: m.category,
-    createdDate: todayISO(),
-    isCompleted: false,
-    difficultyFeedback: null,
+    created_date: today,
+    is_completed: false,
+    difficulty_feedback: null,
   }))
-  const all = [...getMissions(), ...created]
-  writeJSON(MISSIONS_KEY, all)
-  return created
+  const { data, error } = await supabase.from('missions').insert(rows).select()
+  if (error) throw error
+  return data.map(toMission)
 }
 
-export function completeMission(id, difficultyFeedback) {
-  const all = getMissions().map((m) =>
-    m.id === id ? { ...m, isCompleted: true, difficultyFeedback } : m,
-  )
-  writeJSON(MISSIONS_KEY, all)
-  return all.find((m) => m.id === id)
+export async function completeMission(id, difficultyFeedback) {
+  const userId = await getUserId()
+  const { data, error } = await supabase
+    .from('missions')
+    .update({ is_completed: true, difficulty_feedback: difficultyFeedback })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .select()
+    .single()
+  if (error) throw error
+  return toMission(data)
 }
 
-export function getTodayMissions() {
+export async function getTodayMissions() {
+  const missions = await getMissions()
   const today = todayISO()
-  return getMissions().filter((m) => m.createdDate === today)
+  return missions.filter((m) => m.createdDate === today)
 }
 
-export function getTodayCompletedCount() {
-  return getTodayMissions().filter((m) => m.isCompleted).length
+export async function getTodayCompletedCount() {
+  const todayMissions = await getTodayMissions()
+  return todayMissions.filter((m) => m.isCompleted).length
 }
 
-export function getTotalCompletedCount() {
-  return getMissions().filter((m) => m.isCompleted).length
+export async function getTotalCompletedCount() {
+  const missions = await getMissions()
+  return missions.filter((m) => m.isCompleted).length
 }
 
-export function getCompletedHistory() {
-  return getMissions()
+export async function getCompletedHistory() {
+  const missions = await getMissions()
+  return missions
     .filter((m) => m.isCompleted)
     .sort((a, b) => (a.createdDate < b.createdDate ? 1 : -1))
 }
 
-export function getIncompleteMissions() {
+export async function getIncompleteMissions() {
+  const missions = await getMissions()
   const today = todayISO()
-  return getMissions().filter((m) => !m.isCompleted && m.createdDate !== today)
+  return missions.filter((m) => !m.isCompleted && m.createdDate !== today)
 }
 
-export function getSessions() {
-  return readJSON(SESSIONS_KEY, [])
+export async function getSessions() {
+  const userId = await getUserId()
+  const { data, error } = await supabase
+    .from('sessions')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true })
+  if (error) throw error
+  return data.map((row) => ({
+    date: row.date,
+    emotionType: row.emotion_type,
+    energyLevel: row.energy_level,
+    missionCount: row.mission_count,
+  }))
 }
 
-export function addSession(session) {
-  const all = [...getSessions(), { ...session, date: todayISO() }]
-  writeJSON(SESSIONS_KEY, all)
-  return all
+export async function addSession(session) {
+  const userId = await getUserId()
+  const { error } = await supabase.from('sessions').insert({
+    user_id: userId,
+    emotion_type: session.emotionType,
+    energy_level: session.energyLevel,
+    mission_count: session.missionCount,
+    date: todayISO(),
+  })
+  if (error) throw error
+  return getSessions()
 }
