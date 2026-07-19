@@ -3,28 +3,35 @@ import ChatBubble from './ChatBubble'
 import TypingIndicator from './TypingIndicator'
 import MissionCard from './MissionCard'
 import MissionModal from './MissionModal'
-import { EMOTION_TYPES, ENERGY_LEVELS } from '../data/constants'
 
 export default function ChatScreen({ conv }) {
-  const { messages, stage, loading, apiDegraded, start, selectEmotion, selectEnergy, completeMissionWithFeedback } = conv
+  const { messages, loading, apiDegraded, todayMissionExists, start, sendMessage, requestMissionFlow, completeMissionWithFeedback } = conv
   const [selectedMission, setSelectedMission] = useState(null)
+  const [input, setInput] = useState('')
   const bottomRef = useRef(null)
 
   useEffect(() => {
-    if (stage === 'idle') {
-      start()
-    }
-  }, [stage, start])
+    start()
+  }, [start])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages.length, loading, stage])
+  }, [messages.length, loading])
 
   const activeMission = selectedMission
-    ? messages
-        .flatMap((m) => m.missions ?? [])
-        .find((m) => m.id === selectedMission) ?? selectedMission
+    ? messages.flatMap((m) => m.missions ?? []).find((m) => m.id === selectedMission) ?? selectedMission
     : null
+
+  const lastMessage = messages[messages.length - 1]
+  const activeChips =
+    !loading && lastMessage?.role === 'ai' && Array.isArray(lastMessage.chips) ? lastMessage.chips : []
+
+  const handleSend = (text) => {
+    const trimmed = text.trim()
+    if (!trimmed || loading) return
+    sendMessage(trimmed)
+    setInput('')
+  }
 
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-leaf-50">
@@ -42,6 +49,15 @@ export default function ChatScreen({ conv }) {
         {messages.map((msg) => (
           <div key={msg.id} className="space-y-2">
             <ChatBubble role={msg.role} text={msg.text} />
+            {msg.offerMission && (
+              <button
+                type="button"
+                onClick={requestMissionFlow}
+                className="flex items-center gap-2 rounded-xl border border-leaf-300 bg-white px-4 py-3 text-left text-sm font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-[0.98]"
+              >
+                🌱 오늘의 맞춤 미션 받기
+              </button>
+            )}
             {msg.type === 'missions' && (
               <div className="grid gap-2 pl-1 pr-8">
                 {msg.missions.map((mission) => (
@@ -54,38 +70,47 @@ export default function ChatScreen({ conv }) {
 
         {loading && <TypingIndicator />}
 
-        {stage === 'awaiting_emotion' && !loading && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {EMOTION_TYPES.map((e) => (
-              <button
-                key={e.key}
-                type="button"
-                onClick={() => selectEmotion(e.key)}
-                className="rounded-full border border-leaf-300 bg-white px-4 py-2 text-sm font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-95"
-              >
-                {e.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {stage === 'awaiting_energy' && !loading && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {ENERGY_LEVELS.map((e) => (
-              <button
-                key={e.key}
-                type="button"
-                onClick={() => selectEnergy(e.key)}
-                className="rounded-full border border-leaf-300 bg-white px-4 py-2 text-sm font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-95"
-              >
-                {e.label}
-              </button>
-            ))}
-          </div>
-        )}
-
         <div ref={bottomRef} />
       </div>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleSend(input)
+        }}
+        className="border-t border-leaf-100 bg-white px-3 py-3"
+      >
+        {activeChips.length > 0 && (
+          <div className="mb-2 flex flex-wrap gap-2">
+            {activeChips.map((chip, i) => (
+              <button
+                key={`${chip}-${i}`}
+                type="button"
+                onClick={() => handleSend(chip)}
+                className="rounded-full border border-leaf-300 bg-white px-3 py-1.5 text-xs font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-95"
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="flex gap-2">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={todayMissionExists ? '마음을 편하게 적어보세요' : '오늘 하루는 어떠셨나요?'}
+            disabled={loading}
+            className="flex-1 rounded-full border border-leaf-200 px-4 py-2.5 text-sm outline-none focus:border-leaf-400 disabled:bg-leaf-50"
+          />
+          <button
+            type="submit"
+            disabled={!input.trim() || loading}
+            className="shrink-0 rounded-full bg-leaf-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-leaf-600 disabled:bg-leaf-200"
+          >
+            전송
+          </button>
+        </div>
+      </form>
 
       <MissionModal
         mission={activeMission}

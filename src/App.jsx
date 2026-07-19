@@ -4,13 +4,15 @@ import ChatScreen from './components/ChatScreen'
 import DashboardScreen from './components/DashboardScreen'
 import NavBar from './components/NavBar'
 import AuthScreen from './components/AuthScreen'
+import NicknameScreen from './components/NicknameScreen'
 import { useConversation } from './hooks/useConversation'
 import { useAuth } from './hooks/useAuth'
 
 function App() {
   const [view, setView] = useState('start')
-  const conv = useConversation()
   const auth = useAuth()
+  const displayName = auth.user?.user_metadata?.display_name ?? null
+  const conv = useConversation({ displayName })
 
   if (auth.loading) {
     return (
@@ -22,6 +24,10 @@ function App() {
 
   if (!auth.user) {
     return <AuthScreen auth={auth} />
+  }
+
+  if (!displayName) {
+    return <NicknameScreen auth={auth} />
   }
 
   if (view === 'start') {

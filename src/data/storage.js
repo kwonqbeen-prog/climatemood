@@ -122,3 +122,77 @@ export async function addSession(session) {
   if (error) throw error
   return getSessions()
 }
+
+function toChatMessage(row, missionsById) {
+  return {
+    id: row.id,
+    role: row.role,
+    type: row.type,
+    text: row.text,
+    chips: row.chips ?? [],
+    offerMission: row.offer_mission,
+    missions:
+      row.type === 'missions'
+        ? (row.mission_ids ?? []).map((id) => missionsById[id]).filter(Boolean)
+        : undefined,
+    rawModelJson: row.raw_model_json,
+  }
+}
+
+export async function getTodayChatMessages() {
+  const userId = await getUserId()
+  const today = todayISO()
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('created_date', today)
+    .order('created_at', { ascending: true })
+  if (error) throw error
+
+  const needsMissions = data.some((row) => (row.mission_ids ?? []).length > 0)
+  const missionsById = needsMissions
+    ? Object.fromEntries((await getTodayMissions()).map((m) => [m.id, m]))
+    : {}
+
+  return data.map((row) => toChatMessage(row, missionsById))
+}
+
+export async function addChatMessage(msg) {
+  const userId = await getUserId()
+  const { data, error } = await supabase
+    .from('chat_messages')
+    .insert({
+      user_id: userId,
+      role: msg.role,
+      type: msg.type ?? 'text',
+      text: msg.text ?? null,
+      chips: msg.chips ?? [],
+      offer_mission: Boolean(msg.offerMission),
+      mission_ids: msg.missionIds ?? [],
+      raw_model_json: msg.rawModelJson ?? null,
+      created_date: todayISO(),
+    })
+    .select()
+    .single()
+  if (error) throw error
+  return toChatMessage(data, {})
+}
+
+export async function getUserMemories(limit = 20) {
+  const userId = await getUserId()
+  const { data, error } = await supabase
+    .from('user_memories')
+    .select('content')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  if (error) throw error
+  return data.map((row) => row.content)
+}
+
+export async function addUserMemory(content) {
+  const userId = await getUserId()
+  const { error } = await supabase.from('user_memories').insert({ user_id: userId, content })
+  if (error) throw error
+}

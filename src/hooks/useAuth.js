@@ -35,6 +35,16 @@ export function useAuth() {
     return true
   }, [])
 
+  const updateDisplayName = useCallback(async (displayName) => {
+    setAuthError(null)
+    const { error } = await supabase.auth.updateUser({ data: { display_name: displayName } })
+    if (error) {
+      setAuthError(error.message)
+      return { error: error.message }
+    }
+    return { error: null }
+  }, [])
+
   const signInWithEmail = useCallback(async (email, password) => {
     setAuthError(null)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -71,5 +81,6 @@ export function useAuth() {
     signInWithEmail,
     signInWithKakao,
     signOut,
+    updateDisplayName,
   }
 }
