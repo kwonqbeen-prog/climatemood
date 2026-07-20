@@ -27,7 +27,15 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"Gothic A1"', '-apple-system', 'BlinkMacSystemFont', '"Apple SD Gothic Neo"', '"Malgun Gothic"', 'sans-serif'],
+        sans: [
+          '"Pretendard Variable"',
+          'Pretendard',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Apple SD Gothic Neo"',
+          '"Malgun Gothic"',
+          'sans-serif',
+        ],
       },
       keyframes: {
         'fade-in-up': {
