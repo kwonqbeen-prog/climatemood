@@ -1,3 +1,6 @@
+// 라이트/다크/고대비 3개를 동시에 보여주는 미리보기라 CSS 변수(현재 테마 값만 읽힘)를
+// 못 쓰고 값을 하드코딩했다. index.css의 --color-surface/--color-accent 등을 바꿀 때는
+// 여기도 같은 값으로 맞춰줘야 한다.
 const SWATCHES = {
   light: { bg: '#faf9f7', card: '#ffffff', border: '#e7e5e4', accent: '#3a7a2b' },
   dark: { bg: '#121212', card: '#1e1e1e', border: '#33312f', accent: '#69b158' },

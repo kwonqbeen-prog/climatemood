@@ -4,7 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        leaf: {
+        // 실제 UI는 전부 아래의 시맨틱 토큰(surface/ink/accent 등, index.css의 CSS 변수를
+        // 가리킴)을 통해서만 색을 쓴다. brand/clay는 그 변수들의 값을 고를 때 참고한
+        // 원본 색상 램프일 뿐 어떤 클래스명으로도 직접 쓰이지 않는다. 브랜드 컬러를
+        // 바꿀 때는 이 램프를 새 색상으로 교체한 뒤, index.css 상단 주석의 체크리스트를
+        // 따라가면 된다.
+        brand: {
           50: '#f1f9f0',
           100: '#dcefd8',
           200: '#b9dfb1',

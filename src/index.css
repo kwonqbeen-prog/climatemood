@@ -8,6 +8,19 @@
   색상 토큰. 다크 모드는 라이트 팔레트의 단순 반전이 아니라 채도를 낮춰 별도로 튜닝했고,
   모든 텍스트/배경 조합은 WCAG AA(4.5:1, 큰 텍스트 3:1) 이상을 만족하도록 계산해서 골랐다.
   고대비 모드는 AAA(7:1) 이상을 목표로 한 별도 고정 팔레트(검정 배경 + 흰/노랑)다.
+
+  브랜드 컬러(현재 초록)를 바꾸게 되면 손대야 할 곳:
+  1. tailwind.config.js의 brand 색상 램프를 새 색상으로 교체
+  2. 아래 3개 테마 블록의 --color-accent/--color-accent-strong/--color-accent-soft/
+     --color-accent-on 값을 새 램프에서 골라 교체 (--color-success와 --color-focus-ring은
+     var(--color-accent...)를 참조하므로 자동으로 따라옴 — 새로 값을 넣지 말 것)
+  3. --color-highlight(보조 강조색, 현재 캐러멜색)는 accent와 독립적인 색이라 자동으로
+     안 바뀜 — 새 브랜드색과 어울리는지 디자인 판단 필요
+  4. ThemePreviewThumb.jsx의 SWATCHES는 3개 테마를 동시에 보여주는 미리보기 목업이라
+     CSS 변수를 못 쓰고 값을 하드코딩해뒀음 — 여기 값도 같이 바꿔야 함
+  5. 색약 보정 오버라이드(파랑/버밀리언/골드 계열)는 브랜드 색과 무관하게 설계했지만,
+     새 브랜드색이 하필 그 팔레트와 겹치면(예: 브랜드색이 파랑이 되는 경우) 재검토 필요
+  6. 카카오 로그인 버튼(#FEE500)은 카카오 브랜드 규정 색이라 무관하게 그대로 둘 것
 */
 :root {
   color-scheme: light;
@@ -25,13 +38,13 @@
   --color-accent-soft: #f1f9f0;
   --color-accent-on: #ffffff;
   --color-highlight: #8f4c24;
-  --color-success: #2f6124;
+  --color-success: var(--color-accent-strong);
   --color-danger: #be123c;
   --color-warning: #92400e;
   --color-warning-soft: #fef7ed;
   --color-disabled-bg: #e7e5e4;
   --color-disabled-ink: #a8a29e;
-  --color-focus-ring: #3a7a2b;
+  --color-focus-ring: var(--color-accent);
   --shadow-modal: 0 20px 40px rgba(28, 25, 23, 0.18);
   --line-width: 1px;
   --focus-ring-width: 2px;
@@ -54,13 +67,13 @@
   --color-accent-soft: #1c2b17;
   --color-accent-on: #121212;
   --color-highlight: #e4a274;
-  --color-success: #8fca82;
+  --color-success: var(--color-accent-strong);
   --color-danger: #f87171;
   --color-warning: #fcd34d;
   --color-warning-soft: #2a2113;
   --color-disabled-bg: #33312f;
   --color-disabled-ink: #78716c;
-  --color-focus-ring: #8fca82;
+  --color-focus-ring: var(--color-accent-strong);
   --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
 }
 
@@ -88,13 +101,13 @@
   --color-accent-soft: #0f1f14;
   --color-accent-on: #0a0a0a;
   --color-highlight: #ffc773;
-  --color-success: #6ee7a0;
+  --color-success: var(--color-accent);
   --color-danger: #ff8f80;
   --color-warning: #ffc773;
   --color-warning-soft: #0a0a0a;
   --color-disabled-bg: #262626;
   --color-disabled-ink: #808080;
-  --color-focus-ring: #6ee7a0;
+  --color-focus-ring: var(--color-accent);
   --shadow-modal: none;
   --line-width: 2px;
   --focus-ring-width: 4px;
