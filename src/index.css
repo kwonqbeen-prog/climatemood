@@ -116,12 +116,14 @@
   --color-danger: #ff8f5e;
   --color-warning: #f0e442;
 }
-[data-theme='light'][data-colorblind='blue-yellow'] {
-  --color-warning: #c2185b;
-}
-[data-theme='dark'][data-colorblind='blue-yellow'] {
-  --color-warning: #f48fb1;
-}
+/*
+  청황색약(tritanopia)은 파랑↔초록, 노랑↔분홍/보라 축에서 혼동이 생기지만 빨강↔초록
+  구분은 영향을 받지 않는다(Wong/Okabe-Ito 색맹 안전 팔레트 기준). 이 앱의 기본 상태색은
+  danger=빨강, success=초록, warning=버밀리언(주황에 가까운 톤, 순수 노랑이 아님)이라
+  파랑도 순수 노랑도 쓰지 않으므로 원래부터 안전하다. 이전 버전은 warning을 분홍으로
+  바꿨는데, 분홍은 노랑↔분홍 혼동쌍의 반대쪽 끝이라 tritanopia에서 danger의 빨강과
+  오히려 구분이 안 되는 역효과가 있었다. 그래서 별도 오버라이드 없이 기본값을 그대로 쓴다.
+*/
 
 /* 움직임 줄이기 */
 [data-motion='reduced'] *,
