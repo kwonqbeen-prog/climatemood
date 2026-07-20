@@ -121,7 +121,7 @@ export default function SettingsScreen({ onBack }) {
               id="font-scale"
               type="range"
               min={0.9}
-              max={1.5}
+              max={2}
               step={0.05}
               value={settings.fontScale}
               onChange={(e) => setFontScale(e.target.value)}

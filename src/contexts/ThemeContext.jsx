@@ -22,10 +22,13 @@ export function systemPrefersReducedMotion() {
   return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 }
 
+// WCAG 2.1 SC 1.4.4(Resize Text)는 200%까지 콘텐츠 손실 없이 확대 가능해야 한다고
+// 명시한다. 실제로 채팅 버블/미션 카드/시작 화면을 200%로 렌더링해서 레이아웃이
+// 깨지지 않는 것을 확인한 뒤 상한을 200%로 맞췄다.
 function clampFontScale(value) {
   const n = Number(value)
   if (!Number.isFinite(n)) return 1
-  return Math.min(1.5, Math.max(0.9, n))
+  return Math.min(2, Math.max(0.9, n))
 }
 
 function sanitize(raw) {

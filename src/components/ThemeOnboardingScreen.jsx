@@ -31,7 +31,7 @@ export default function ThemeOnboardingScreen({ onDone }) {
         <p className="mt-2 text-sm text-ink-muted">나중에 설정에서 언제든 바꿀 수 있어요.</p>
 
         <div className="mt-3 flex items-center gap-2 rounded-lg bg-accent-soft px-3 py-2 text-xs font-semibold text-accent">
-          <Icon name="info" className="text-[16px]" />
+          <Icon name="info" className="text-base shrink-0" />
           기기 설정을 확인해보니 {detected === 'dark' ? '다크' : '라이트'} 모드를 쓰고 계시네요. 아래에 미리 선택해뒀어요.
         </div>
 
