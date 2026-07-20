@@ -1,7 +1,7 @@
 const SWATCHES = {
   light: { bg: '#faf9f7', card: '#ffffff', border: '#e7e5e4', accent: '#3a7a2b' },
   dark: { bg: '#121212', card: '#1e1e1e', border: '#33312f', accent: '#69b158' },
-  'high-contrast': { bg: '#000000', card: '#000000', border: '#ffffff', accent: '#ffff00' },
+  'high-contrast': { bg: '#0a0a0a', card: '#0a0a0a', border: '#ffffff', accent: '#6ee7a0' },
 }
 
 export default function ThemePreviewThumb({ variant }) {

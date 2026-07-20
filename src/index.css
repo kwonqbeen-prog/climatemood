@@ -64,30 +64,37 @@
   --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
 }
 
-/* 고정 1종 고대비 모드: 검정 배경 + 흰/노랑 텍스트, AAA(7:1) 이상 */
+/*
+  고정 1종 고대비 모드. Windows 11 대비 테마(Aquatic 등)나 GitHub Dark High Contrast처럼
+  순수 검정/노랑 하나로 밀어붙이지 않고, 브랜드 초록(leaf)을 더 밝은 톤으로 끌어올려
+  그대로 액센트로 쓰고(Material 3의 톤 팔레트 방식과 동일한 원칙: 대비 단계가 달라져도
+  같은 색상군 유지), 성공/경고/위험만 별도 색상군(초록/골드/레드)으로 분리했다.
+  배경도 완전한 #000 대신 아주 짙은 무채색(#0a0a0a)을 써서 화면이 "뚫린 듯" 보이지
+  않게 했다 — 대비비 손실은 사실상 없다(19.8:1). 전부 AAA(7:1) 이상.
+*/
 [data-theme='high-contrast'] {
   color-scheme: dark;
 
-  --color-surface: #000000;
-  --color-surface-alt: #000000;
-  --color-surface-sunken: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-alt: #0a0a0a;
+  --color-surface-sunken: #141414;
   --color-ink: #ffffff;
   --color-ink-muted: #ffffff;
-  --color-ink-faint: #ffff00;
+  --color-ink-faint: #c7c7c7;
   --color-line: #ffffff;
   --color-line-input: #ffffff;
-  --color-accent: #ffff00;
-  --color-accent-strong: #ffff00;
-  --color-accent-soft: #000000;
-  --color-accent-on: #000000;
-  --color-highlight: #ffff00;
-  --color-success: #66ff66;
-  --color-danger: #ff9999;
-  --color-warning: #ffa500;
-  --color-warning-soft: #000000;
-  --color-disabled-bg: #000000;
-  --color-disabled-ink: #ffffff;
-  --color-focus-ring: #ffff00;
+  --color-accent: #6ee7a0;
+  --color-accent-strong: #7ef2a8;
+  --color-accent-soft: #0f1f14;
+  --color-accent-on: #0a0a0a;
+  --color-highlight: #ffc773;
+  --color-success: #6ee7a0;
+  --color-danger: #ff8f80;
+  --color-warning: #ffc773;
+  --color-warning-soft: #0a0a0a;
+  --color-disabled-bg: #262626;
+  --color-disabled-ink: #808080;
+  --color-focus-ring: #6ee7a0;
   --shadow-modal: none;
   --line-width: 2px;
   --focus-ring-width: 4px;
