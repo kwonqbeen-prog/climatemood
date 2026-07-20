@@ -45,6 +45,14 @@ export function useAuth() {
     return { error: null }
   }, [])
 
+  const updateUserMetadata = useCallback(async (partial) => {
+    const { error } = await supabase.auth.updateUser({ data: partial })
+    if (error) {
+      return { error: error.message }
+    }
+    return { error: null }
+  }, [])
+
   const signInWithEmail = useCallback(async (email, password) => {
     setAuthError(null)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -82,5 +90,6 @@ export function useAuth() {
     signInWithKakao,
     signOut,
     updateDisplayName,
+    updateUserMetadata,
   }
 }

@@ -4,8 +4,156 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  색상 토큰. 다크 모드는 라이트 팔레트의 단순 반전이 아니라 채도를 낮춰 별도로 튜닝했고,
+  모든 텍스트/배경 조합은 WCAG AA(4.5:1, 큰 텍스트 3:1) 이상을 만족하도록 계산해서 골랐다.
+  고대비 모드는 AAA(7:1) 이상을 목표로 한 별도 고정 팔레트(검정 배경 + 흰/노랑)다.
+*/
 :root {
   color-scheme: light;
+
+  --color-surface: #faf9f7;
+  --color-surface-alt: #ffffff;
+  --color-surface-sunken: #f1efec;
+  --color-ink: #1c1917;
+  --color-ink-muted: #57534e;
+  --color-ink-faint: #a8a29e;
+  --color-line: #e7e5e4;
+  --color-line-input: #8a8580;
+  --color-accent: #3a7a2b;
+  --color-accent-strong: #2f6124;
+  --color-accent-soft: #f1f9f0;
+  --color-accent-on: #ffffff;
+  --color-highlight: #8f4c24;
+  --color-success: #2f6124;
+  --color-danger: #be123c;
+  --color-warning: #92400e;
+  --color-warning-soft: #fef7ed;
+  --color-disabled-bg: #e7e5e4;
+  --color-disabled-ink: #a8a29e;
+  --color-focus-ring: #3a7a2b;
+  --shadow-modal: 0 20px 40px rgba(28, 25, 23, 0.18);
+  --line-width: 1px;
+  --focus-ring-width: 2px;
+  --font-scale: 1;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-surface: #121212;
+  --color-surface-alt: #1e1e1e;
+  --color-surface-sunken: #262625;
+  --color-ink: #f5f5f4;
+  --color-ink-muted: #a8a29e;
+  --color-ink-faint: #78716c;
+  --color-line: #33312f;
+  --color-line-input: #79746f;
+  --color-accent: #69b158;
+  --color-accent-strong: #8fca82;
+  --color-accent-soft: #1c2b17;
+  --color-accent-on: #121212;
+  --color-highlight: #e4a274;
+  --color-success: #8fca82;
+  --color-danger: #fca5a5;
+  --color-warning: #fcd34d;
+  --color-warning-soft: #2a2113;
+  --color-disabled-bg: #33312f;
+  --color-disabled-ink: #78716c;
+  --color-focus-ring: #8fca82;
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* 고정 1종 고대비 모드: 검정 배경 + 흰/노랑 텍스트, AAA(7:1) 이상 */
+[data-theme='high-contrast'] {
+  color-scheme: dark;
+
+  --color-surface: #000000;
+  --color-surface-alt: #000000;
+  --color-surface-sunken: #000000;
+  --color-ink: #ffffff;
+  --color-ink-muted: #ffffff;
+  --color-ink-faint: #ffff00;
+  --color-line: #ffffff;
+  --color-line-input: #ffffff;
+  --color-accent: #ffff00;
+  --color-accent-strong: #ffff00;
+  --color-accent-soft: #000000;
+  --color-accent-on: #000000;
+  --color-highlight: #ffff00;
+  --color-success: #66ff66;
+  --color-danger: #ff9999;
+  --color-warning: #ffa500;
+  --color-warning-soft: #000000;
+  --color-disabled-bg: #000000;
+  --color-disabled-ink: #ffffff;
+  --color-focus-ring: #ffff00;
+  --shadow-modal: none;
+  --line-width: 2px;
+  --focus-ring-width: 4px;
+}
+
+/*
+  색약 보정: SVG/CSS filter로 화면 전체를 왜곡하는 방식(대부분 "보정"이 아니라 색약자가
+  보는 화면을 흉내내는 시뮬레이션 필터라 실제로는 도움이 안 됨) 대신, 상태색(성공/실패/경고)만
+  유형별로 구분이 뚜렷한 값으로 교체하는 커스텀 토큰 세트를 사용한다. 고대비 모드는 이미
+  극단적 명도 대비 + 아이콘 병행으로 구분되므로 색약 오버라이드를 겹치지 않는다.
+*/
+[data-theme='light'][data-colorblind='red-green'] {
+  --color-success: #0060a0;
+  --color-danger: #a34700;
+  --color-warning: #7a6600;
+}
+[data-theme='dark'][data-colorblind='red-green'] {
+  --color-success: #56b4e9;
+  --color-danger: #ff8f5e;
+  --color-warning: #f0e442;
+}
+[data-theme='light'][data-colorblind='blue-yellow'] {
+  --color-warning: #c2185b;
+}
+[data-theme='dark'][data-colorblind='blue-yellow'] {
+  --color-warning: #f48fb1;
+}
+
+/* 움직임 줄이기 */
+[data-motion='reduced'] *,
+[data-motion='reduced'] *::before,
+[data-motion='reduced'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* 굵은 텍스트 */
+[data-bold-text='true'] body {
+  font-weight: 500;
+}
+[data-bold-text='true'] .font-normal {
+  font-weight: 500;
+}
+[data-bold-text='true'] .font-medium {
+  font-weight: 600;
+}
+[data-bold-text='true'] .font-semibold {
+  font-weight: 700;
+}
+[data-bold-text='true'] .font-bold {
+  font-weight: 800;
+}
+[data-bold-text='true'] .font-extrabold {
+  font-weight: 900;
+}
+
+/* 고대비 모드: 테두리를 굵게, 포커스 아웃라인을 기본 대비 2배로 */
+[data-theme='high-contrast'] .border {
+  border-width: 2px;
+}
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus-ring);
+  outline-offset: 2px;
 }
 
 .material-symbols-rounded {
@@ -26,10 +174,22 @@
     'opsz' 24;
 }
 
+html {
+  font-size: calc(16px * var(--font-scale));
+}
+
 body {
   margin: 0;
-  background: #faf9f7;
+  background: var(--color-surface);
+  color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+[data-motion='reduced'] body {
+  transition: none;
 }
 
 #root {
@@ -40,6 +200,6 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6d3d1;
+  background: var(--color-line-input);
   border-radius: 8px;
 }

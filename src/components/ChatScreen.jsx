@@ -3,13 +3,15 @@ import ChatBubble from './ChatBubble'
 import TypingIndicator from './TypingIndicator'
 import MissionCard from './MissionCard'
 import MissionModal from './MissionModal'
-import Icon from './Icon'
+import IconButton from './IconButton'
+import { useTheme } from '../contexts/ThemeContext'
 
 export default function ChatScreen({ conv }) {
   const { messages, loading, apiDegraded, todayMissionExists, start, sendMessage, requestMissionFlow, completeMissionWithFeedback } = conv
   const [selectedMission, setSelectedMission] = useState(null)
   const [input, setInput] = useState('')
   const bottomRef = useRef(null)
+  const { resolvedTheme, toggleQuickTheme } = useTheme()
 
   useEffect(() => {
     start()
@@ -35,13 +37,19 @@ export default function ChatScreen({ conv }) {
   }
 
   return (
-    <div className="flex min-h-svh flex-1 flex-col bg-stone-50">
-      <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/95 px-4 py-3 text-center backdrop-blur">
-        <span className="text-sm font-bold text-stone-800">새싹과의 대화</span>
+    <div className="flex min-h-svh flex-1 flex-col bg-surface">
+      <header className="sticky top-0 z-30 flex items-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
+        <span className="flex-1 text-center text-sm font-bold text-ink">새싹과의 대화</span>
+        <IconButton
+          icon={resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
+          label={resolvedTheme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
+          onClick={toggleQuickTheme}
+          className="absolute right-4 text-ink-muted transition hover:text-ink"
+        />
       </header>
 
       {apiDegraded && (
-        <div className="bg-amber-50 px-4 py-2 text-center text-xs text-amber-700">
+        <div className="bg-warning-soft px-4 py-2 text-center text-xs text-warning">
           AI 연결이 원활하지 않아 기본 응답으로 대화를 이어가고 있어요.
         </div>
       )}
@@ -54,7 +62,7 @@ export default function ChatScreen({ conv }) {
               <button
                 type="button"
                 onClick={requestMissionFlow}
-                className="rounded-xl border border-leaf-600 bg-white px-4 py-3 text-left text-sm font-semibold text-leaf-700 transition hover:bg-leaf-50 active:scale-[0.99]"
+                className="rounded-xl border border-accent bg-surface-alt px-4 py-3 text-left text-sm font-semibold text-accent transition hover:bg-accent-soft active:scale-[0.99]"
               >
                 오늘의 맞춤 미션 받기
               </button>
@@ -79,7 +87,7 @@ export default function ChatScreen({ conv }) {
           e.preventDefault()
           handleSend(input)
         }}
-        className="border-t border-stone-200 bg-white px-3 py-3"
+        className="border-t border-line bg-surface-alt px-3 py-3"
       >
         {activeChips.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-2">
@@ -88,7 +96,7 @@ export default function ChatScreen({ conv }) {
                 key={`${chip}-${i}`}
                 type="button"
                 onClick={() => handleSend(chip)}
-                className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-600 transition hover:border-leaf-500 hover:text-leaf-700 active:scale-95"
+                className="rounded-full border border-line bg-surface-alt px-3 py-1.5 text-xs font-semibold text-ink-muted transition hover:border-accent hover:text-accent active:scale-95"
               >
                 {chip}
               </button>
@@ -101,16 +109,16 @@ export default function ChatScreen({ conv }) {
             onChange={(e) => setInput(e.target.value)}
             placeholder={todayMissionExists ? '마음을 편하게 적어보세요' : '오늘 하루는 어떠셨나요?'}
             disabled={loading}
-            className="flex-1 rounded-full border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-leaf-500 disabled:bg-stone-50"
+            className="flex-1 rounded-full border border-line-input bg-surface-alt px-4 py-2.5 text-sm text-ink outline-none focus:border-accent disabled:bg-surface-sunken"
           />
-          <button
+          <IconButton
             type="submit"
+            icon="arrow_upward"
+            label="전송"
             disabled={!input.trim() || loading}
-            aria-label="전송"
-            className="flex shrink-0 items-center justify-center rounded-full bg-leaf-600 p-2.5 text-white transition hover:bg-leaf-700 disabled:bg-stone-200"
-          >
-            <Icon name="arrow_upward" className="text-xl" />
-          </button>
+            className="shrink-0 rounded-full bg-accent p-2.5 text-accent-on transition hover:bg-accent-strong disabled:bg-disabled disabled:text-disabled-ink"
+            iconClassName="text-xl"
+          />
         </div>
       </form>
 

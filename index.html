@@ -11,6 +11,25 @@
       rel="stylesheet"
     />
     <title>새싹 · 기후 마음 케어</title>
+    <script>
+      (function () {
+        try {
+          var raw = JSON.parse(localStorage.getItem('climatemood:display-settings') || 'null') || {};
+          var theme = raw.theme || 'system';
+          if (theme === 'system') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          var root = document.documentElement;
+          root.setAttribute('data-theme', theme);
+          root.setAttribute('data-colorblind', raw.colorblind || 'none');
+          root.setAttribute('data-motion', raw.reduceMotion ? 'reduced' : 'normal');
+          if (raw.boldText) root.setAttribute('data-bold-text', 'true');
+          root.style.setProperty('--font-scale', String(raw.fontScale || 1));
+        } catch (e) {
+          /* 저장된 값이 없거나 손상된 경우 기본 라이트 테마로 진행 */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
