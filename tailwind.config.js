@@ -16,17 +16,18 @@ export default {
           800: '#284e20',
           900: '#22421c',
         },
-        sky: {
-          50: '#eef7fb',
-          100: '#d7edf6',
-          200: '#b0dbee',
-          300: '#7fc2e1',
-          400: '#4ba3cd',
-          500: '#2f86b3',
+        clay: {
+          50: '#fdf4ee',
+          100: '#f8e3d3',
+          200: '#f0c7a6',
+          300: '#e4a274',
+          400: '#d17f4a',
+          500: '#b8632f',
+          600: '#8f4c24',
         },
       },
       fontFamily: {
-        sans: ['"Pretendard"', '-apple-system', 'BlinkMacSystemFont', '"Apple SD Gothic Neo"', '"Malgun Gothic"', 'sans-serif'],
+        sans: ['"Gothic A1"', '-apple-system', 'BlinkMacSystemFont', '"Apple SD Gothic Neo"', '"Malgun Gothic"', 'sans-serif'],
       },
       keyframes: {
         'fade-in-up': {

@@ -35,9 +35,9 @@ export default function ChatScreen({ conv }) {
   }
 
   return (
-    <div className="flex min-h-svh flex-1 flex-col bg-leaf-50">
-      <header className="sticky top-0 z-30 border-b border-leaf-100 bg-white/95 px-4 py-3 text-center backdrop-blur">
-        <span className="text-sm font-bold text-leaf-800">새싹과의 대화</span>
+    <div className="flex min-h-svh flex-1 flex-col bg-stone-50">
+      <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/95 px-4 py-3 text-center backdrop-blur">
+        <span className="text-sm font-bold text-stone-800">새싹과의 대화</span>
       </header>
 
       {apiDegraded && (
@@ -54,7 +54,7 @@ export default function ChatScreen({ conv }) {
               <button
                 type="button"
                 onClick={requestMissionFlow}
-                className="rounded-xl border border-leaf-300 bg-white px-4 py-3 text-left text-sm font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-[0.98]"
+                className="rounded-xl border border-leaf-600 bg-white px-4 py-3 text-left text-sm font-semibold text-leaf-700 transition hover:bg-leaf-50 active:scale-[0.99]"
               >
                 오늘의 맞춤 미션 받기
               </button>
@@ -79,7 +79,7 @@ export default function ChatScreen({ conv }) {
           e.preventDefault()
           handleSend(input)
         }}
-        className="border-t border-leaf-100 bg-white px-3 py-3"
+        className="border-t border-stone-200 bg-white px-3 py-3"
       >
         {activeChips.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-2">
@@ -88,7 +88,7 @@ export default function ChatScreen({ conv }) {
                 key={`${chip}-${i}`}
                 type="button"
                 onClick={() => handleSend(chip)}
-                className="rounded-full border border-leaf-300 bg-white px-3 py-1.5 text-xs font-semibold text-leaf-700 shadow-sm transition hover:border-leaf-500 hover:bg-leaf-50 active:scale-95"
+                className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-600 transition hover:border-leaf-500 hover:text-leaf-700 active:scale-95"
               >
                 {chip}
               </button>
@@ -101,13 +101,13 @@ export default function ChatScreen({ conv }) {
             onChange={(e) => setInput(e.target.value)}
             placeholder={todayMissionExists ? '마음을 편하게 적어보세요' : '오늘 하루는 어떠셨나요?'}
             disabled={loading}
-            className="flex-1 rounded-full border border-leaf-200 px-4 py-2.5 text-sm outline-none focus:border-leaf-400 disabled:bg-leaf-50"
+            className="flex-1 rounded-full border border-stone-200 px-4 py-2.5 text-sm outline-none focus:border-leaf-500 disabled:bg-stone-50"
           />
           <button
             type="submit"
             disabled={!input.trim() || loading}
             aria-label="전송"
-            className="flex shrink-0 items-center justify-center rounded-full bg-leaf-500 p-2.5 text-white transition hover:bg-leaf-600 disabled:bg-leaf-200"
+            className="flex shrink-0 items-center justify-center rounded-full bg-leaf-600 p-2.5 text-white transition hover:bg-leaf-700 disabled:bg-stone-200"
           >
             <Icon name="arrow_upward" className="text-xl" />
           </button>

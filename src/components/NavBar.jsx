@@ -5,7 +5,7 @@ const TABS = [
 
 export default function NavBar({ active, onChange }) {
   return (
-    <nav className="sticky bottom-0 z-40 flex border-t border-leaf-100 bg-white/95 backdrop-blur">
+    <nav className="sticky bottom-0 z-40 flex border-t border-stone-200 bg-white/95 backdrop-blur">
       {TABS.map((tab) => (
         <button
           key={tab.key}
@@ -13,8 +13,8 @@ export default function NavBar({ active, onChange }) {
           onClick={() => onChange(tab.key)}
           className={`flex-1 border-t-2 py-3.5 text-sm font-semibold transition ${
             active === tab.key
-              ? 'border-leaf-500 text-leaf-600'
-              : 'border-transparent text-leaf-300'
+              ? 'border-leaf-600 text-stone-900'
+              : 'border-transparent text-stone-400'
           }`}
         >
           {tab.label}

@@ -5,8 +5,8 @@ export default function ChatBubble({ role, text }) {
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed whitespace-pre-wrap ${
           isAi
-            ? 'bg-white text-leaf-900 rounded-bl-sm shadow-sm border border-leaf-100'
-            : 'bg-leaf-500 text-white rounded-br-sm'
+            ? 'bg-white text-stone-800 rounded-bl-sm border border-stone-200'
+            : 'bg-leaf-600 text-white rounded-br-sm'
         }`}
       >
         {text}

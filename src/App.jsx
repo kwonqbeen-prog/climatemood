@@ -17,8 +17,8 @@ function App() {
 
   if (auth.loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-leaf-50">
-        <Icon name="progress_activity" className="animate-spin text-3xl text-leaf-400" />
+      <div className="flex min-h-svh items-center justify-center bg-stone-50">
+        <Icon name="progress_activity" className="animate-spin text-3xl text-stone-300" />
       </div>
     )
   }
