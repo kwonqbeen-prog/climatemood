@@ -68,7 +68,7 @@ export function useAuth() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: window.location.origin + import.meta.env.BASE_URL,
       },
     })
     if (error) {
