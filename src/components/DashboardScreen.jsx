@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon'
 import IconButton from './IconButton'
+import MindPlanet from './MindPlanet'
 import { useTheme } from '../contexts/ThemeContext'
 import {
   addMissions,
@@ -30,7 +31,7 @@ async function loadStats() {
 
 const EMPTY_STATS = { todayMissions: [], todayCompleted: 0, total: 0, history: [], incomplete: [] }
 
-export default function DashboardScreen({ onSignOut, onOpenSettings }) {
+export default function DashboardScreen({ onSignOut, onOpenSettings, onViewMissions }) {
   const [stats, setStats] = useState(EMPTY_STATS)
   const [justAdded, setJustAdded] = useState(null)
   const { resolvedTheme } = useTheme()
@@ -66,18 +67,29 @@ export default function DashboardScreen({ onSignOut, onOpenSettings }) {
         </div>
       </header>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-line bg-surface-alt p-4 text-center">
-          <p className="text-xs font-medium text-ink-muted">오늘의 미션</p>
-          <p className="mt-1 text-2xl font-bold text-accent">
-            {stats.todayCompleted}
-            <span className="text-sm font-medium text-ink-muted"> / {stats.todayMissions.length}</span>
-          </p>
+      <MindPlanet totalCompleted={stats.total} history={stats.history} />
+
+      <div className="rounded-2xl border border-line bg-surface-alt p-4">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-xl bg-surface p-3 text-center">
+            <p className="text-xs font-medium text-ink-muted">오늘의 미션</p>
+            <p className="mt-1 text-2xl font-bold text-accent">
+              {stats.todayCompleted}
+              <span className="text-sm font-medium text-ink-muted"> / {stats.todayMissions.length}</span>
+            </p>
+          </div>
+          <div className="rounded-xl bg-surface p-3 text-center">
+            <p className="text-xs font-medium text-ink-muted">누적 완료</p>
+            <p className="mt-1 text-2xl font-bold text-highlight">{stats.total}</p>
+          </div>
         </div>
-        <div className="rounded-2xl border border-line bg-surface-alt p-4 text-center">
-          <p className="text-xs font-medium text-ink-muted">누적 완료</p>
-          <p className="mt-1 text-2xl font-bold text-highlight">{stats.total}</p>
-        </div>
+        <button
+          type="button"
+          onClick={onViewMissions}
+          className="cta-gradient mt-3 w-full rounded-xl py-3 text-sm font-bold transition active:scale-[0.99]"
+        >
+          이런 미션도 있어요 · 미션 구경하기
+        </button>
       </div>
 
       {stats.incomplete.length > 0 && (

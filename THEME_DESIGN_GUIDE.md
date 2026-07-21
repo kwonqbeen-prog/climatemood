@@ -36,6 +36,29 @@ tailwind.config.js (theme.extend.colors)
 | `success` / `danger` / `warning` / `warning-soft` | 상태색. success는 항상 `accent`(-strong)를 참조해 자동으로 따라감 |
 | `disabled` / `disabled-ink` | 비활성 상태 |
 | `focus` (`--color-focus-ring`) | 포커스 아웃라인. 항상 `accent`를 참조 |
+| `--gradient-cta` / `cta-on` | 시그니처 CTA 그라데이션(코랄→앰버) / 그 위 텍스트색. 순수 CSS 클래스 `.cta-gradient`로만 노출(Tailwind 유틸은 그라데이션을 못 담음) |
+| `--gradient-planet-seed` / `-category-{life,value,mindfulness,together}` / `-growing` / `-flourishing` | "마음 지구"(`MindPlanet.jsx`) 상태별 그라데이션. 카테고리 슬러그는 `data/constants.js`의 `CATEGORY_META` 참고 |
+
+### 1a. 기능 레이어 vs 감성 레이어 (2026-07-21 "지구 마음" 리브랜딩)
+
+토큰을 두 계층으로 나눈다:
+
+- **기능 레이어**: `surface`/`ink`/`line`/`accent`/`disabled` 등 — UI 골격, 항상 저채도
+  단색. 포커스 링·탭 상태·입력 포커스처럼 "구조적 강조"에만 쓰고, 하나의 단색이라
+  Tailwind `bg-accent` 등으로 그대로 쓸 수 있다.
+- **감성 레이어**: `--gradient-cta`, `--gradient-planet-*` — 그라데이션. 시그니처 CTA는
+  로그인/온보딩/대시보드 핵심 진입점 5곳에만 반복 사용해 브랜드 인지를 형성하고,
+  나머지 버튼(채팅 전송, 설정 저장, 재도전 등)은 기능 레이어의 `accent`를 그대로 쓴다
+  — CTA를 아무 데나 쓰면 "하나의 시그니처"라는 의미가 희석된다.
+
+`MindPlanet.jsx`는 `<html data-theme>`와 같은 관례를 컴포넌트 스코프로 재사용한다:
+JS는 `data-planet-stage`(`seed`/`growing`/`flourishing`)와 `data-planet-category`
+(`life`/`value`/`mindfulness`/`together`) 두 속성만 DOM에 세팅하고, 실제 그라데이션
+분기는 전부 `index.css`의 속성 선택자가 담당한다 — 테마 분기를 위해 컴포넌트 안에서
+`useTheme()`을 부를 필요가 없다. 고대비 모드는 이 두 속성 조합을 무시하고
+`growing`/`flourishing` 단계에만 반응해 `--color-ink-faint`/`--color-ink` 기반 명도
+그라데이션으로 강제 대체한다(카테고리색 완전 배제) — 기획서 §6.2("성장 표현은 색상이
+아니라 명도 단계로 대체")를 만족하기 위함.
 
 ## 2. 네 가지 화면 모드와 설계 원칙
 
@@ -47,12 +70,13 @@ tailwind.config.js (theme.extend.colors)
 ### 원칙 A — 색상군 유지 (Material Design 3 톤 팔레트 방식)
 
 **대비 단계가 달라져도 브랜드 색상군(hue)은 유지하고, 명도/채도만 조정한다.**
-다크 모드의 accent(`#69b158`)와 고대비 모드의 accent(`#6ee7a0`)는 전부 라이트 모드
-accent(`#3a7a2b`)와 같은 초록 계열(H≈109)이고, 명도만 끌어올렸다. 색상군을 통째로
-바꾼 예외는 절대 없어야 한다 — 처음 고대비 모드를 만들 때 검정 배경에 노랑
-액센트+라임 성공+핑크 위험+오렌지 경고를 무분별하게 섞었던 실패 사례가 있었고,
-"브랜드와 무관한 OS 접근성 모드"처럼 보인다는 피드백으로 전부 브랜드 초록 계열로
-재작업했다.
+(2026-07-21 리브랜딩으로 브랜드색은 초록→저채도 테라코타 계열로 바뀌었지만 원칙은
+동일하다.) 다크 모드의 accent와 고대비 모드의 accent는 전부 라이트 모드 accent와
+같은 웜뉴트럴 계열이고, 명도만 끌어올렸다. 색상군을 통째로 바꾼 예외는 절대 없어야
+한다 — 처음 고대비 모드를 만들 때 검정 배경에 노랑 액센트+라임 성공+핑크 위험+오렌지
+경고를 무분별하게 섞었던 실패 사례가 있었고, "브랜드와 무관한 OS 접근성 모드"처럼
+보인다는 피드백으로 전부 브랜드 색상군으로 재작업했다. (현재 accent 값은 정확한
+hex/대비 확정 전 PLACEHOLDER — `src/index.css` 상단 주석 참고.)
 
 ### 원칙 B — 절제된 상태색 (IBM Carbon 방식)
 
@@ -219,6 +243,10 @@ accent(`#3a7a2b`)와 같은 초록 계열(H≈109)이고, 명도만 끌어올렸
 5. 색약 보정 오버라이드가 새 브랜드색과 우연히 겹치지 않는지 재검토(예: 브랜드색이
    파랑 계열이 되면 적록색약 오버라이드의 "success=파랑"과 충돌 가능)
 6. 카카오 로그인 버튼(`#FEE500`)은 브랜드 규정색이라 무관하게 그대로 둔다
+7. `--gradient-cta`/`--color-cta-on`(시그니처 CTA)과 `--gradient-planet-*`("마음 지구")도
+   함께 재검토. 고대비 모드의 `--gradient-planet-growing`/`-flourishing`은 색상이 아니라
+   명도 3단계만 써야 하므로(§1a, 기획서 §6.2), `--color-ink-faint`/`--color-ink` 같은
+   무채색 명도 토큰만 참조하도록 유지할 것
 
 ## 7. 실제 참고 사례
 

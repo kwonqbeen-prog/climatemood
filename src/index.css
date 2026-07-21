@@ -9,7 +9,17 @@
   모든 텍스트/배경 조합은 WCAG AA(4.5:1, 큰 텍스트 3:1) 이상을 만족하도록 계산해서 골랐다.
   고대비 모드는 AAA(7:1) 이상을 목표로 한 별도 고정 팔레트(검정 배경 + 흰/노랑)다.
 
-  브랜드 컬러(현재 초록)를 바꾸게 되면 손대야 할 곳:
+  2026-07-21 "지구 마음" 리브랜딩(구조 우선 패스)으로 2계층 컬러 구조로 전환:
+  - 기능 레이어(UI 골격): --color-accent* — 예전엔 브랜드 초록이었지만, 지금은 저채도
+    웜뉴트럴(테라코타 계열)로, 포커스 링/탭 상태/입력 포커스 등 "구조적 강조"만 담당.
+    아래 hex 값은 전부 PLACEHOLDER — 정확한 값과 대비 검증은 후속 컬러 확정 세션에서 진행.
+  - 감성 레이어(그라데이션): --gradient-cta/--color-cta-on(시그니처 CTA, 코랄→앰버 계열,
+    모드 불문 동일 그라데이션 하나만 반복 사용)과 --gradient-planet-*("마음 지구" 대시보드
+    오브젝트 상태별 그라데이션, MindPlanet.jsx가 소비)로 구성. Tailwind 유틸 클래스는
+    그라데이션 값을 담을 수 없어서 .cta-gradient/.mind-planet__orb 같은 순수 CSS 클래스로
+    노출한다(하단 참고).
+
+  브랜드 컬러(현재 코랄/앰버 방향)를 다시 바꾸게 되면 손대야 할 곳:
   1. tailwind.config.js의 brand 색상 램프를 새 색상으로 교체
   2. 아래 3개 테마 블록의 --color-accent/--color-accent-strong/--color-accent-soft/
      --color-accent-on 값을 새 램프에서 골라 교체 (--color-success와 --color-focus-ring은
@@ -21,6 +31,11 @@
   5. 색약 보정 오버라이드(파랑/버밀리언/골드 계열)는 브랜드 색과 무관하게 설계했지만,
      새 브랜드색이 하필 그 팔레트와 겹치면(예: 브랜드색이 파랑이 되는 경우) 재검토 필요
   6. 카카오 로그인 버튼(#FEE500)은 카카오 브랜드 규정 색이라 무관하게 그대로 둘 것
+  7. --gradient-cta/--color-cta-on(시그니처 CTA)과 --gradient-planet-*("마음 지구" 상태별
+     그라데이션, 카테고리 슬러그는 data/constants.js의 CATEGORY_META 참고)도 함께 재검토.
+     고대비 모드의 --gradient-planet-growing/-flourishing은 색상이 아니라 명도 3단계만
+     써야 하므로(스펙 §6.2), 기존 --color-ink-faint/--color-ink를 그대로 재사용했다 —
+     새 브랜드색을 넣더라도 이 두 줄만은 무채색 명도 토큰을 계속 참조할 것
 */
 :root {
   color-scheme: light;
@@ -33,9 +48,10 @@
   --color-ink-faint: #a8a29e;
   --color-line: #e7e5e4;
   --color-line-input: #8a8580;
-  --color-accent: #3a7a2b;
-  --color-accent-strong: #2f6124;
-  --color-accent-soft: #f1f9f0;
+  /* PLACEHOLDER: 저채도 테라코타 웜뉴트럴 — 정확한 대비 검증은 후속 세션에서 */
+  --color-accent: #8a5a4a;
+  --color-accent-strong: #6e4438;
+  --color-accent-soft: #f7ece7;
   --color-accent-on: #ffffff;
   --color-highlight: #8f4c24;
   --color-success: var(--color-accent-strong);
@@ -49,6 +65,17 @@
   --line-width: 1px;
   --focus-ring-width: 2px;
   --font-scale: 1;
+
+  /* 감성 레이어: 시그니처 CTA 그라데이션 (PLACEHOLDER, 코랄→앰버) — 모드 무관 하나만 사용 */
+  --gradient-cta: linear-gradient(135deg, #ff8a65 0%, #ffb74d 100%);
+  --color-cta-on: #241209;
+
+  /* 감성 레이어: "마음 지구" 상태별 그라데이션 (PLACEHOLDER, 카테고리 매핑 미확정) */
+  --gradient-planet-seed: radial-gradient(circle at 35% 30%, #e5e3e0 0%, #b9b5b0 60%, #8f8b86 100%);
+  --gradient-planet-category-life: linear-gradient(160deg, #ff8a65, #ffb74d);
+  --gradient-planet-category-value: linear-gradient(160deg, #ff7a90, #ffab91);
+  --gradient-planet-category-mindfulness: linear-gradient(160deg, #ffab91, #ffd54f);
+  --gradient-planet-category-together: linear-gradient(160deg, #ff8a65, #ff7a90);
 }
 
 [data-theme='dark'] {
@@ -62,10 +89,11 @@
   --color-ink-faint: #78716c;
   --color-line: #33312f;
   --color-line-input: #79746f;
-  --color-accent: #69b158;
-  --color-accent-strong: #8fca82;
-  --color-accent-soft: #1c2b17;
-  --color-accent-on: #121212;
+  /* PLACEHOLDER: 라이트와 같은 웜뉴트럴 계열을 다크 표면에 맞게 재튜닝 */
+  --color-accent: #d8a08e;
+  --color-accent-strong: #e8b7a6;
+  --color-accent-soft: #3a2620;
+  --color-accent-on: #1c1310;
   --color-highlight: #e4a274;
   --color-success: var(--color-accent-strong);
   --color-danger: #f87171;
@@ -75,15 +103,28 @@
   --color-disabled-ink: #78716c;
   --color-focus-ring: var(--color-accent-strong);
   --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
+
+  /* --gradient-cta/--color-cta-on은 의도적으로 오버라이드하지 않음 — 라이트/다크 모두
+     동일한 시그니처 그라데이션 하나를 유지해 브랜드 인지를 형성한다 */
+  --gradient-planet-seed: radial-gradient(circle at 35% 30%, #6b6862, #45423e, #2a2825);
+  --gradient-planet-category-life: linear-gradient(160deg, #e8734f, #e8a23e);
+  --gradient-planet-category-value: linear-gradient(160deg, #e8657c, #e89685);
+  --gradient-planet-category-mindfulness: linear-gradient(160deg, #e89685, #e8bc3e);
+  --gradient-planet-category-together: linear-gradient(160deg, #e8734f, #e8657c);
 }
 
 /*
   고정 1종 고대비 모드. Windows 11 대비 테마(Aquatic 등)나 GitHub Dark High Contrast처럼
-  순수 검정/노랑 하나로 밀어붙이지 않고, 브랜드 초록(leaf)을 더 밝은 톤으로 끌어올려
+  순수 검정/노랑 하나로 밀어붙이지 않고, 브랜드색(테라코타 계열)을 더 밝은 톤으로 끌어올려
   그대로 액센트로 쓰고(Material 3의 톤 팔레트 방식과 동일한 원칙: 대비 단계가 달라져도
   같은 색상군 유지), 성공/경고/위험만 별도 색상군(초록/골드/레드)으로 분리했다.
   배경도 완전한 #000 대신 아주 짙은 무채색(#0a0a0a)을 써서 화면이 "뚫린 듯" 보이지
-  않게 했다 — 대비비 손실은 사실상 없다(19.8:1). 전부 AAA(7:1) 이상.
+  않게 했다 — 대비비 손실은 사실상 없다(19.8:1). 전부 AAA(7:1) 이상(신규 PLACEHOLDER
+  값은 대비 재검증 전이라 예외).
+
+  "마음 지구" 성장 표현(§6.2)은 이 모드에서 색상이 아니라 명도 3단계로 대체해야 하므로,
+  --gradient-planet-growing/-flourishing은 카테고리와 무관하게 이미 AAA로 튜닝된
+  --color-ink-faint/--color-ink 무채색 토큰만 재사용한다.
 */
 [data-theme='high-contrast'] {
   color-scheme: dark;
@@ -96,9 +137,10 @@
   --color-ink-faint: #c7c7c7;
   --color-line: #ffffff;
   --color-line-input: #ffffff;
-  --color-accent: #6ee7a0;
-  --color-accent-strong: #7ef2a8;
-  --color-accent-soft: #0f1f14;
+  /* PLACEHOLDER */
+  --color-accent: #ffb199;
+  --color-accent-strong: #ffc7b3;
+  --color-accent-soft: #2a1712;
   --color-accent-on: #0a0a0a;
   --color-highlight: #ffc773;
   --color-success: var(--color-accent);
@@ -111,6 +153,15 @@
   --shadow-modal: none;
   --line-width: 2px;
   --focus-ring-width: 4px;
+
+  /* 그라데이션 대신 "평평한 그라데이션"(= 시각적으로 단색)으로 접어서 .cta-gradient가
+     별도 분기 없이도 고대비 규칙(단색+테두리)을 만족하게 한다 */
+  --gradient-cta: linear-gradient(0deg, var(--color-accent), var(--color-accent));
+  --color-cta-on: #0a0a0a;
+
+  --gradient-planet-seed: radial-gradient(circle, #333333, #1a1a1a);
+  --gradient-planet-growing: radial-gradient(circle, var(--color-ink-faint), #666666);
+  --gradient-planet-flourishing: radial-gradient(circle, var(--color-ink), #cccccc);
 }
 
 /*
@@ -232,4 +283,59 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--color-line-input);
   border-radius: 8px;
+}
+
+/* 시그니처 CTA 그라데이션 — Tailwind 유틸로는 그라데이션 값을 표현할 수 없어 별도 클래스로 노출 */
+.cta-gradient {
+  background-image: var(--gradient-cta);
+  color: var(--color-cta-on);
+}
+[data-theme='high-contrast'] .cta-gradient {
+  border: 2px solid var(--color-ink);
+}
+
+/* "마음 지구" 오브젝트 — data-planet-stage/data-planet-category로 CSS만으로 분기 */
+.mind-planet__orb {
+  background-image: var(--gradient-planet-seed);
+  transition:
+    background-image 0.3s ease,
+    filter 0.3s ease;
+}
+.mind-planet__orb[data-planet-stage='growing'][data-planet-category='life'] {
+  background-image: var(--gradient-planet-category-life);
+}
+.mind-planet__orb[data-planet-stage='growing'][data-planet-category='value'] {
+  background-image: var(--gradient-planet-category-value);
+}
+.mind-planet__orb[data-planet-stage='growing'][data-planet-category='mindfulness'] {
+  background-image: var(--gradient-planet-category-mindfulness);
+}
+.mind-planet__orb[data-planet-stage='growing'][data-planet-category='together'] {
+  background-image: var(--gradient-planet-category-together);
+}
+.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='life'] {
+  background-image: var(--gradient-planet-category-life);
+  filter: brightness(1.15) saturate(1.1);
+}
+.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='value'] {
+  background-image: var(--gradient-planet-category-value);
+  filter: brightness(1.15) saturate(1.1);
+}
+.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='mindfulness'] {
+  background-image: var(--gradient-planet-category-mindfulness);
+  filter: brightness(1.15) saturate(1.1);
+}
+.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='together'] {
+  background-image: var(--gradient-planet-category-together);
+  filter: brightness(1.15) saturate(1.1);
+}
+
+/* 고대비: 카테고리 무시, 명도 3단계만 (색상 변화 금지, 기획서 §6.2) */
+[data-theme='high-contrast'] .mind-planet__orb[data-planet-stage='growing'] {
+  background-image: var(--gradient-planet-growing) !important;
+  filter: none !important;
+}
+[data-theme='high-contrast'] .mind-planet__orb[data-planet-stage='flourishing'] {
+  background-image: var(--gradient-planet-flourishing) !important;
+  filter: none !important;
 }

@@ -2,9 +2,9 @@
 // 못 쓰고 값을 하드코딩했다. index.css의 --color-surface/--color-accent 등을 바꿀 때는
 // 여기도 같은 값으로 맞춰줘야 한다.
 const SWATCHES = {
-  light: { bg: '#faf9f7', card: '#ffffff', border: '#e7e5e4', accent: '#3a7a2b' },
-  dark: { bg: '#121212', card: '#1e1e1e', border: '#33312f', accent: '#69b158' },
-  'high-contrast': { bg: '#0a0a0a', card: '#0a0a0a', border: '#ffffff', accent: '#6ee7a0' },
+  light: { bg: '#faf9f7', card: '#ffffff', border: '#e7e5e4', accent: '#8a5a4a' },
+  dark: { bg: '#121212', card: '#1e1e1e', border: '#33312f', accent: '#d8a08e' },
+  'high-contrast': { bg: '#0a0a0a', card: '#0a0a0a', border: '#ffffff', accent: '#ffb199' },
 }
 
 export default function ThemePreviewThumb({ variant }) {
@@ -15,12 +15,12 @@ export default function ThemePreviewThumb({ variant }) {
         style={{ background: 'linear-gradient(135deg, #faf9f7 50%, #121212 50%)' }}
         aria-hidden="true"
       >
-        <span className="material-symbols-rounded absolute left-1.5 top-1.5 text-[13px]" style={{ color: '#3a7a2b' }}>
+        <span className="material-symbols-rounded absolute left-1.5 top-1.5 text-[13px]" style={{ color: '#8a5a4a' }}>
           light_mode
         </span>
         <span
           className="material-symbols-rounded absolute bottom-1 right-1.5 text-[13px]"
-          style={{ color: '#69b158' }}
+          style={{ color: '#d8a08e' }}
         >
           dark_mode
         </span>

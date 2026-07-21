@@ -39,7 +39,7 @@ export default function ChatScreen({ conv }) {
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-surface">
       <header className="sticky top-0 z-30 flex items-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
-        <span className="flex-1 text-center text-sm font-bold text-ink">새싹과의 대화</span>
+        <span className="flex-1 text-center text-sm font-bold text-ink">지구 마음과의 대화</span>
         <IconButton
           icon={resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
           label={resolvedTheme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}

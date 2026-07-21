@@ -22,8 +22,8 @@ export default function ThemeOnboardingScreen({ onDone }) {
   return (
     <div className="flex min-h-svh flex-col bg-surface px-6 py-10">
       <div className="flex items-center gap-1.5">
-        <Icon name="eco" className="text-xl text-accent" />
-        <span className="text-sm font-bold tracking-tight text-ink">새싹</span>
+        <Icon name="public" className="text-xl text-accent" />
+        <span className="text-sm font-bold tracking-tight text-ink">지구 마음</span>
       </div>
 
       <div className="mt-8 flex-1">
@@ -65,7 +65,7 @@ export default function ThemeOnboardingScreen({ onDone }) {
         <button
           type="button"
           onClick={confirm}
-          className="w-full rounded-xl bg-accent py-3.5 text-sm font-bold text-accent-on transition hover:bg-accent-strong active:scale-[0.99]"
+          className="cta-gradient w-full rounded-xl py-3.5 text-sm font-bold transition active:scale-[0.99]"
         >
           이 모드로 시작하기
         </button>

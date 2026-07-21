@@ -9,17 +9,19 @@ export default {
         // 원본 색상 램프일 뿐 어떤 클래스명으로도 직접 쓰이지 않는다. 브랜드 컬러를
         // 바꿀 때는 이 램프를 새 색상으로 교체한 뒤, index.css 상단 주석의 체크리스트를
         // 따라가면 된다.
+        // PLACEHOLDER: 코랄→앰버 "새벽/여명" 방향의 참고 램프. 600/700이 :root의
+        // --color-accent/--color-accent-strong과 같은 값(기존 초록 램프와 동일한 관례).
         brand: {
-          50: '#f1f9f0',
-          100: '#dcefd8',
-          200: '#b9dfb1',
-          300: '#8fca82',
-          400: '#69b158',
-          500: '#4c9639',
-          600: '#3a7a2b',
-          700: '#2f6124',
-          800: '#284e20',
-          900: '#22421c',
+          50: '#fdf4ee',
+          100: '#fbe3d3',
+          200: '#f6c3a6',
+          300: '#ffab7a',
+          400: '#ff8a65',
+          500: '#f2703f',
+          600: '#8a5a4a',
+          700: '#6e4438',
+          800: '#4a2d26',
+          900: '#2e1c18',
         },
         clay: {
           50: '#fdf4ee',
@@ -50,6 +52,9 @@ export default {
         disabled: 'var(--color-disabled-bg)',
         'disabled-ink': 'var(--color-disabled-ink)',
         focus: 'var(--color-focus-ring)',
+        // 그라데이션 자체는 Tailwind 색상 클래스로 표현할 수 없어 .cta-gradient(index.css)를
+        // 쓴다. 이 alias는 그 위에 얹는 텍스트 색상용.
+        'cta-on': 'var(--color-cta-on)',
       },
       fontFamily: {
         sans: [

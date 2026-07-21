@@ -46,7 +46,11 @@ function AppShell({ auth }) {
       <div className="flex-1">
         {view === 'chat' && <ChatScreen conv={conv} />}
         {view === 'dashboard' && (
-          <DashboardScreen onSignOut={auth.signOut} onOpenSettings={() => setView('settings')} />
+          <DashboardScreen
+            onSignOut={auth.signOut}
+            onOpenSettings={() => setView('settings')}
+            onViewMissions={() => setView('chat')}
+          />
         )}
       </div>
       <NavBar active={view} onChange={setView} />

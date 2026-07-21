@@ -31,10 +31,10 @@ export function clampMissionCount(value) {
 export const CATEGORIES = ['생활 실천', '가치 연결', '마음 챙김', '함께하기']
 
 export const CATEGORY_META = {
-  '생활 실천': { purpose: '자기효능감' },
-  '가치 연결': { purpose: '의미 부여' },
-  '마음 챙김': { purpose: '정서 조절' },
-  '함께하기': { purpose: '연결감' },
+  '생활 실천': { purpose: '자기효능감', slug: 'life' },
+  '가치 연결': { purpose: '의미 부여', slug: 'value' },
+  '마음 챙김': { purpose: '정서 조절', slug: 'mindfulness' },
+  '함께하기': { purpose: '연결감', slug: 'together' },
 }
 
 export const DIFFICULTY_OPTIONS = ['쉬움', '적당함', '어려움']

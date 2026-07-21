@@ -25,10 +25,10 @@ export default function AuthScreen({ auth }) {
     <div className="flex min-h-svh flex-col items-center justify-center bg-surface px-6">
       <div className="w-full max-w-xs">
         <div className="flex items-center justify-center gap-1.5">
-          <Icon name="eco" className="text-2xl text-accent" />
-          <span className="text-lg font-bold tracking-tight text-ink">새싹</span>
+          <Icon name="public" className="text-2xl text-accent" />
+          <span className="text-lg font-bold tracking-tight text-ink">지구 마음</span>
         </div>
-        <p className="mt-1 text-center text-xs text-ink-muted">기후 마음 케어</p>
+        <p className="mt-1 text-center text-xs text-ink-muted">마음을 돌보다, 지구를 돌보다</p>
 
         <div className="mt-8 flex border-b border-line">
           <button
@@ -94,7 +94,7 @@ export default function AuthScreen({ auth }) {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-xl bg-accent py-3 text-sm font-bold text-accent-on transition hover:bg-accent-strong active:scale-[0.99] disabled:bg-disabled disabled:text-disabled-ink"
+            className="cta-gradient w-full rounded-xl py-3 text-sm font-bold transition active:scale-[0.99] disabled:opacity-50"
           >
             {mode === 'login' ? '로그인' : '회원가입'}
           </button>

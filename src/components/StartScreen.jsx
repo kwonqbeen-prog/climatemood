@@ -4,9 +4,10 @@ export default function StartScreen({ onStart }) {
   return (
     <div className="flex min-h-svh flex-col bg-surface px-6 pb-8 pt-10">
       <div className="flex items-center gap-1.5">
-        <Icon name="eco" className="text-xl text-accent" />
-        <span className="text-sm font-bold tracking-tight text-ink">새싹</span>
+        <Icon name="public" className="text-xl text-accent" />
+        <span className="text-sm font-bold tracking-tight text-ink">지구 마음</span>
       </div>
+      <p className="mt-1 text-xs text-ink-muted">마음을 돌보다, 지구를 돌보다</p>
 
       <div className="flex flex-1 flex-col justify-center">
         <h1 className="text-[2.5rem] font-extrabold leading-[1.15] tracking-tight text-ink">
@@ -23,7 +24,7 @@ export default function StartScreen({ onStart }) {
       <button
         type="button"
         onClick={onStart}
-        className="w-full rounded-xl bg-accent py-4 text-[0.9375rem] font-bold text-accent-on transition hover:bg-accent-strong active:scale-[0.99]"
+        className="cta-gradient w-full rounded-xl py-4 text-[0.9375rem] font-bold transition active:scale-[0.99]"
       >
         마음 나누러 가기
       </button>
