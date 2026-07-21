@@ -11,7 +11,7 @@ export default function ThemeToggleSwitch({ isDark, onToggle, className = '' }) 
       className={`relative h-7 w-12 shrink-0 rounded-full border border-line bg-surface-sunken transition ${className}`}
     >
       <span
-        className={`absolute top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-surface-alt shadow-sm transition-all ${
+        className={`absolute top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-surface-alt shadow-sm transition-all ${
           isDark ? 'left-6' : 'left-0.5'
         }`}
       >

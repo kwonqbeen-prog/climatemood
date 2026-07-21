@@ -44,11 +44,9 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
     <div className="flex min-h-svh flex-1 flex-col bg-surface">
       <header className="sticky top-0 z-30 flex items-center justify-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
         <TabSwitcher active={activeTab} onChange={onTabChange} />
-        <ThemeToggleSwitch
-          isDark={resolvedTheme === 'dark'}
-          onToggle={toggleQuickTheme}
-          className="absolute right-4"
-        />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <ThemeToggleSwitch isDark={resolvedTheme === 'dark'} onToggle={toggleQuickTheme} />
+        </div>
       </header>
 
       {apiDegraded && (
