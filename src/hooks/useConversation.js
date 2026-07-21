@@ -154,7 +154,7 @@ export function useConversation({ displayName } = {}) {
       historyRef.current = [
         ...historyRef.current,
         { role: 'user', content: userText },
-        { role: 'assistant', content: JSON.stringify(result) },
+        { role: 'assistant', content: result.reply_message },
       ].slice(-20)
 
       if (result.emotion_type && EMOTION_ENUM_KEYS.includes(result.emotion_type)) {
@@ -249,7 +249,7 @@ export function useConversation({ displayName } = {}) {
         .map((m) =>
           m.role === 'user'
             ? { role: 'user', content: m.text }
-            : { role: 'assistant', content: JSON.stringify(m.rawModelJson) },
+            : { role: 'assistant', content: m.rawModelJson?.reply_message ?? '' },
         )
         .slice(-20)
 
