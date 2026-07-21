@@ -13,11 +13,16 @@
   - 기능 레이어(UI 골격): --color-accent* — 예전엔 브랜드 초록이었지만, 지금은 저채도
     웜뉴트럴(테라코타 계열)로, 포커스 링/탭 상태/입력 포커스 등 "구조적 강조"만 담당.
     아래 hex 값은 전부 PLACEHOLDER — 정확한 값과 대비 검증은 후속 컬러 확정 세션에서 진행.
-  - 감성 레이어(그라데이션): --gradient-cta/--color-cta-on(시그니처 CTA, 코랄→앰버 계열,
-    모드 불문 동일 그라데이션 하나만 반복 사용)과 --gradient-planet-*("마음 지구" 대시보드
-    오브젝트 상태별 그라데이션, MindPlanet.jsx가 소비)로 구성. Tailwind 유틸 클래스는
-    그라데이션 값을 담을 수 없어서 .cta-gradient/.mind-planet__orb 같은 순수 CSS 클래스로
-    노출한다(하단 참고).
+  - 감성 레이어(그라데이션): --gradient-planet-*("마음 지구" 대시보드 오브젝트 상태별
+    그라데이션, MindPlanet.jsx가 소비)로 구성. Tailwind 유틸 클래스는 그라데이션 값을
+    담을 수 없어서 .mind-planet__orb 같은 순수 CSS 클래스로 노출한다(하단 참고).
+
+  2026-07-21 UI/UX 수정 패스로 시그니처 CTA 그라데이션(--gradient-cta/--color-cta-on/
+  .cta-gradient)은 폐기했다. 일반 CTA 버튼은 전부 .cta-neutral(기능 레이어, ink/surface
+  반전)을 쓰고, 그라데이션은 "마음 지구" 오브젝트와 카테고리 태그/성취 하이라이트에만
+  남긴다. .cta-neutral은 --color-ink를 배경, --color-surface를 텍스트로 써서 라이트(짙은
+  배경+흰 텍스트)/다크(밝은 배경+짙은 텍스트) 반전이 토큰 자체에서 자동으로 나온다 —
+  별도 다크 오버라이드가 필요 없음.
 
   브랜드 컬러(현재 코랄/앰버 방향)를 다시 바꾸게 되면 손대야 할 곳:
   1. tailwind.config.js의 brand 색상 램프를 새 색상으로 교체
@@ -31,11 +36,11 @@
   5. 색약 보정 오버라이드(파랑/버밀리언/골드 계열)는 브랜드 색과 무관하게 설계했지만,
      새 브랜드색이 하필 그 팔레트와 겹치면(예: 브랜드색이 파랑이 되는 경우) 재검토 필요
   6. 카카오 로그인 버튼(#FEE500)은 카카오 브랜드 규정 색이라 무관하게 그대로 둘 것
-  7. --gradient-cta/--color-cta-on(시그니처 CTA)과 --gradient-planet-*("마음 지구" 상태별
-     그라데이션, 카테고리 슬러그는 data/constants.js의 CATEGORY_META 참고)도 함께 재검토.
-     고대비 모드의 --gradient-planet-growing/-flourishing은 색상이 아니라 명도 3단계만
-     써야 하므로(스펙 §6.2), 기존 --color-ink-faint/--color-ink를 그대로 재사용했다 —
-     새 브랜드색을 넣더라도 이 두 줄만은 무채색 명도 토큰을 계속 참조할 것
+  7. --gradient-planet-*("마음 지구" 상태별 그라데이션, 카테고리 슬러그는
+     data/constants.js의 CATEGORY_META 참고)도 함께 재검토. 고대비 모드의
+     --gradient-planet-growing/-flourishing은 색상이 아니라 명도 3단계만 써야 하므로
+     (스펙 §6.2), 기존 --color-ink-faint/--color-ink를 그대로 재사용했다 — 새 브랜드색을
+     넣더라도 이 두 줄만은 무채색 명도 토큰을 계속 참조할 것
 */
 :root {
   color-scheme: light;
@@ -65,10 +70,8 @@
   --line-width: 1px;
   --focus-ring-width: 2px;
   --font-scale: 1;
-
-  /* 감성 레이어: 시그니처 CTA 그라데이션 (PLACEHOLDER, 코랄→앰버) — 모드 무관 하나만 사용 */
-  --gradient-cta: linear-gradient(135deg, #ff8a65 0%, #ffb74d 100%);
-  --color-cta-on: #241209;
+  /* 배경 별 장식 요소 불투명도 — 라이트는 은은하게, 다크/고대비는 더 뚜렷하게 */
+  --star-opacity: 0.35;
 
   /* 감성 레이어: "마음 지구" 상태별 그라데이션 (PLACEHOLDER, 카테고리 매핑 미확정) */
   --gradient-planet-seed: radial-gradient(circle at 35% 30%, #e5e3e0 0%, #b9b5b0 60%, #8f8b86 100%);
@@ -103,9 +106,8 @@
   --color-disabled-ink: #78716c;
   --color-focus-ring: var(--color-accent-strong);
   --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
+  --star-opacity: 0.7;
 
-  /* --gradient-cta/--color-cta-on은 의도적으로 오버라이드하지 않음 — 라이트/다크 모두
-     동일한 시그니처 그라데이션 하나를 유지해 브랜드 인지를 형성한다 */
   --gradient-planet-seed: radial-gradient(circle at 35% 30%, #6b6862, #45423e, #2a2825);
   --gradient-planet-category-life: linear-gradient(160deg, #e8734f, #e8a23e);
   --gradient-planet-category-value: linear-gradient(160deg, #e8657c, #e89685);
@@ -153,11 +155,7 @@
   --shadow-modal: none;
   --line-width: 2px;
   --focus-ring-width: 4px;
-
-  /* 그라데이션 대신 "평평한 그라데이션"(= 시각적으로 단색)으로 접어서 .cta-gradient가
-     별도 분기 없이도 고대비 규칙(단색+테두리)을 만족하게 한다 */
-  --gradient-cta: linear-gradient(0deg, var(--color-accent), var(--color-accent));
-  --color-cta-on: #0a0a0a;
+  --star-opacity: 0.6;
 
   --gradient-planet-seed: radial-gradient(circle, #333333, #1a1a1a);
   --gradient-planet-growing: radial-gradient(circle, var(--color-ink-faint), #666666);
@@ -285,21 +283,41 @@ body {
   border-radius: 8px;
 }
 
-/* 시그니처 CTA 그라데이션 — Tailwind 유틸로는 그라데이션 값을 표현할 수 없어 별도 클래스로 노출 */
-.cta-gradient {
-  background-image: var(--gradient-cta);
-  color: var(--color-cta-on);
+/* 중립 CTA — ink를 배경, surface를 텍스트로 써서 라이트/다크 반전이 토큰에서 자동으로 나온다 */
+.cta-neutral {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
 }
-[data-theme='high-contrast'] .cta-gradient {
+[data-theme='high-contrast'] .cta-neutral {
   border: 2px solid var(--color-ink);
+}
+
+/* 배경 장식용 별 — 정적 요소, 테마별 --star-opacity로 은은함 정도만 조절 */
+.mind-planet__star {
+  background-color: var(--color-ink-faint);
+  opacity: var(--star-opacity);
 }
 
 /* "마음 지구" 오브젝트 — data-planet-stage/data-planet-category로 CSS만으로 분기 */
 .mind-planet__orb {
+  position: relative;
   background-image: var(--gradient-planet-seed);
   transition:
     background-image 0.3s ease,
     filter 0.3s ease;
+}
+/* 테두리 바깥으로 은은하게 번지는 광채 — 색상 변수를 따로 두지 않고 오브 자신의
+   현재 그라데이션을 그대로 상속(inherit)해서 확대·블러한다. 그래서 단계/카테고리/
+   테마가 바뀌어도 별도 분기 없이 항상 오브와 같은 색으로 따라온다 */
+.mind-planet__orb::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  z-index: -1;
+  border-radius: 50%;
+  background-image: inherit;
+  filter: blur(28px) brightness(1.3) saturate(1.1);
+  opacity: 0.6;
 }
 .mind-planet__orb[data-planet-stage='growing'][data-planet-category='life'] {
   background-image: var(--gradient-planet-category-life);
