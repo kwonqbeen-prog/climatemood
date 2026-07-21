@@ -28,7 +28,15 @@ export async function askSolar({ systemPrompt, userMessage, history = [] }) {
   })
 
   if (error) {
-    throw new Error(`Solar API 프록시 호출 실패: ${error.message}`)
+    // supabase-js only gives a generic "non-2xx status code" message by default — the actual
+    // reason (rate limit, Upstage error, etc.) is in the response body, which it doesn't parse
+    // for us. Read it from error.context so failures are diagnosable from the console alone.
+    const detail = await error.context
+      ?.clone()
+      .json()
+      .then((body) => body?.error)
+      .catch(() => null)
+    throw new Error(`Solar API 프록시 호출 실패: ${detail ?? error.message}`)
   }
   if (data?.error) {
     throw new Error(data.error)
