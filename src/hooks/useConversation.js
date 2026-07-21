@@ -42,6 +42,12 @@ function writeProposedFlag() {
 }
 
 const ENERGY_LABELS = { 1: '무기력(미션 1개)', 3: '보통(미션 3개)', 5: '의욕적(미션 5개)' }
+const ENTRY_CHIPS = [
+  '오늘 기분을 이야기하고 싶어요',
+  '마음이 좀 복잡해요',
+  '오늘의 미션을 추천해주세요',
+  '그냥 이야기만 나누고 싶어요',
+]
 const FALLBACK_TURN = {
   mode: 'freechat',
   stage: 'freechat',
@@ -194,7 +200,11 @@ export function useConversation({ displayName } = {}) {
         role: 'ai',
         type: 'text',
         text: result.reply_message,
-        chips: Array.isArray(result.suggested_chips) ? result.suggested_chips.slice(0, 3) : [],
+        chips: entryOfferShown
+          ? ENTRY_CHIPS
+          : Array.isArray(result.suggested_chips)
+            ? result.suggested_chips.slice(0, 3)
+            : [],
         offerMission: entryOfferShown || shouldSuggest,
         rawModelJson: result,
       })

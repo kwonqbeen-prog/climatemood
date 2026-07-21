@@ -24,7 +24,7 @@ export default function StartScreen({ onStart }) {
       <button
         type="button"
         onClick={onStart}
-        className="cta-gradient w-full rounded-xl py-4 text-[0.9375rem] font-bold transition active:scale-[0.99]"
+        className="cta-neutral w-full rounded-xl py-4 text-[0.9375rem] font-bold transition hover:opacity-90 active:scale-[0.99]"
       >
         마음 나누러 가기
       </button>

@@ -52,9 +52,6 @@ export default {
         disabled: 'var(--color-disabled-bg)',
         'disabled-ink': 'var(--color-disabled-ink)',
         focus: 'var(--color-focus-ring)',
-        // 그라데이션 자체는 Tailwind 색상 클래스로 표현할 수 없어 .cta-gradient(index.css)를
-        // 쓴다. 이 alias는 그 위에 얹는 텍스트 색상용.
-        'cta-on': 'var(--color-cta-on)',
       },
       fontFamily: {
         sans: [

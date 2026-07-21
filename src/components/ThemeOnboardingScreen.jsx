@@ -6,7 +6,7 @@ import { systemPrefersDark, useTheme } from '../contexts/ThemeContext'
 const CHOICES = [
   { value: 'light', label: '라이트 모드' },
   { value: 'dark', label: '다크 모드' },
-  { value: 'high-contrast', label: '고대비 모드 (포용성 모드)' },
+  { value: 'high-contrast', label: '접근성 모드' },
 ]
 
 export default function ThemeOnboardingScreen({ onDone }) {
@@ -65,7 +65,7 @@ export default function ThemeOnboardingScreen({ onDone }) {
         <button
           type="button"
           onClick={confirm}
-          className="cta-gradient w-full rounded-xl py-3.5 text-sm font-bold transition active:scale-[0.99]"
+          className="cta-neutral w-full rounded-xl py-3.5 text-sm font-bold transition hover:opacity-90 active:scale-[0.99]"
         >
           이 모드로 시작하기
         </button>

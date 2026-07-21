@@ -3,10 +3,13 @@ import ChatBubble from './ChatBubble'
 import TypingIndicator from './TypingIndicator'
 import MissionCard from './MissionCard'
 import MissionModal from './MissionModal'
+import Icon from './Icon'
 import IconButton from './IconButton'
+import TabSwitcher from './TabSwitcher'
+import ThemeToggleSwitch from './ThemeToggleSwitch'
 import { useTheme } from '../contexts/ThemeContext'
 
-export default function ChatScreen({ conv }) {
+export default function ChatScreen({ conv, activeTab, onTabChange }) {
   const { messages, loading, apiDegraded, todayMissionExists, start, sendMessage, requestMissionFlow, completeMissionWithFeedback } = conv
   const [selectedMission, setSelectedMission] = useState(null)
   const [input, setInput] = useState('')
@@ -26,8 +29,9 @@ export default function ChatScreen({ conv }) {
     : null
 
   const lastMessage = messages[messages.length - 1]
-  const activeChips =
-    !loading && lastMessage?.role === 'ai' && Array.isArray(lastMessage.chips) ? lastMessage.chips : []
+  const lastIsCurrentAiTurn = !loading && lastMessage?.role === 'ai'
+  const activeChips = lastIsCurrentAiTurn && Array.isArray(lastMessage.chips) ? lastMessage.chips : []
+  const showMissionOffer = lastIsCurrentAiTurn && Boolean(lastMessage.offerMission)
 
   const handleSend = (text) => {
     const trimmed = text.trim()
@@ -38,13 +42,12 @@ export default function ChatScreen({ conv }) {
 
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-surface">
-      <header className="sticky top-0 z-30 flex items-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
-        <span className="flex-1 text-center text-sm font-bold text-ink">지구 마음과의 대화</span>
-        <IconButton
-          icon={resolvedTheme === 'dark' ? 'light_mode' : 'dark_mode'}
-          label={resolvedTheme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
-          onClick={toggleQuickTheme}
-          className="absolute right-4 text-ink-muted transition hover:text-ink"
+      <header className="sticky top-0 z-30 flex items-center justify-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
+        <TabSwitcher active={activeTab} onChange={onTabChange} />
+        <ThemeToggleSwitch
+          isDark={resolvedTheme === 'dark'}
+          onToggle={toggleQuickTheme}
+          className="absolute right-4"
         />
       </header>
 
@@ -58,15 +61,6 @@ export default function ChatScreen({ conv }) {
         {messages.map((msg) => (
           <div key={msg.id} className="space-y-2">
             <ChatBubble role={msg.role} text={msg.text} />
-            {msg.offerMission && (
-              <button
-                type="button"
-                onClick={requestMissionFlow}
-                className="rounded-xl border border-accent bg-surface-alt px-4 py-3 text-left text-sm font-semibold text-accent transition hover:bg-accent-soft active:scale-[0.99]"
-              >
-                오늘의 맞춤 미션 받기
-              </button>
-            )}
             {msg.type === 'missions' && (
               <div className="grid gap-2 pl-1 pr-8">
                 {msg.missions.map((mission) => (
@@ -89,6 +83,17 @@ export default function ChatScreen({ conv }) {
         }}
         className="border-t border-line bg-surface-alt px-3 py-3"
       >
+        {showMissionOffer && (
+          <button
+            type="button"
+            onClick={requestMissionFlow}
+            className="mb-2 flex w-full items-center gap-2 rounded-xl border border-accent/50 bg-accent-soft px-4 py-3 text-left transition active:scale-[0.99]"
+          >
+            <Icon name="auto_awesome" className="text-lg text-accent" />
+            <span className="flex-1 text-sm font-bold text-ink">오늘의 맞춤 미션 받기</span>
+            <Icon name="arrow_forward" className="text-base text-accent" />
+          </button>
+        )}
         {activeChips.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-2">
             {activeChips.map((chip, i) => (

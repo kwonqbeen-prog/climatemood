@@ -3,11 +3,11 @@ import StartScreen from './components/StartScreen'
 import Icon from './components/Icon'
 import ChatScreen from './components/ChatScreen'
 import DashboardScreen from './components/DashboardScreen'
-import NavBar from './components/NavBar'
 import AuthScreen from './components/AuthScreen'
 import NicknameScreen from './components/NicknameScreen'
 import ThemeOnboardingScreen from './components/ThemeOnboardingScreen'
 import SettingsScreen from './components/SettingsScreen'
+import MissionListScreen from './components/MissionListScreen'
 import { useConversation } from './hooks/useConversation'
 import { useAuth } from './hooks/useAuth'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
@@ -31,30 +31,25 @@ function AppShell({ auth }) {
   }
 
   if (view === 'settings') {
-    return (
-      <div className="flex min-h-svh flex-col">
-        <div className="flex-1">
-          <SettingsScreen onBack={() => setView('dashboard')} />
-        </div>
-        <NavBar active="dashboard" onChange={setView} />
-      </div>
-    )
+    return <SettingsScreen onBack={() => setView('dashboard')} />
+  }
+
+  if (view === 'missions') {
+    return <MissionListScreen onBack={() => setView('dashboard')} />
+  }
+
+  if (view === 'chat') {
+    return <ChatScreen conv={conv} activeTab={view} onTabChange={setView} />
   }
 
   return (
-    <div className="flex min-h-svh flex-col">
-      <div className="flex-1">
-        {view === 'chat' && <ChatScreen conv={conv} />}
-        {view === 'dashboard' && (
-          <DashboardScreen
-            onSignOut={auth.signOut}
-            onOpenSettings={() => setView('settings')}
-            onViewMissions={() => setView('chat')}
-          />
-        )}
-      </div>
-      <NavBar active={view} onChange={setView} />
-    </div>
+    <DashboardScreen
+      activeTab={view}
+      onTabChange={setView}
+      onSignOut={auth.signOut}
+      onOpenSettings={() => setView('settings')}
+      onViewMissions={() => setView('missions')}
+    />
   )
 }
 

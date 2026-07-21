@@ -36,7 +36,7 @@ tailwind.config.js (theme.extend.colors)
 | `success` / `danger` / `warning` / `warning-soft` | 상태색. success는 항상 `accent`(-strong)를 참조해 자동으로 따라감 |
 | `disabled` / `disabled-ink` | 비활성 상태 |
 | `focus` (`--color-focus-ring`) | 포커스 아웃라인. 항상 `accent`를 참조 |
-| `--gradient-cta` / `cta-on` | 시그니처 CTA 그라데이션(코랄→앰버) / 그 위 텍스트색. 순수 CSS 클래스 `.cta-gradient`로만 노출(Tailwind 유틸은 그라데이션을 못 담음) |
+| `.cta-neutral` (순수 CSS 클래스) | 일반 CTA 버튼. `--color-ink`를 배경, `--color-surface`를 텍스트로 써서 라이트/다크 반전이 토큰에서 자동으로 나온다(2026-07-21 UI/UX 패스에서 시그니처 CTA 그라데이션을 대체) |
 | `--gradient-planet-seed` / `-category-{life,value,mindfulness,together}` / `-growing` / `-flourishing` | "마음 지구"(`MindPlanet.jsx`) 상태별 그라데이션. 카테고리 슬러그는 `data/constants.js`의 `CATEGORY_META` 참고 |
 
 ### 1a. 기능 레이어 vs 감성 레이어 (2026-07-21 "지구 마음" 리브랜딩)
@@ -46,10 +46,11 @@ tailwind.config.js (theme.extend.colors)
 - **기능 레이어**: `surface`/`ink`/`line`/`accent`/`disabled` 등 — UI 골격, 항상 저채도
   단색. 포커스 링·탭 상태·입력 포커스처럼 "구조적 강조"에만 쓰고, 하나의 단색이라
   Tailwind `bg-accent` 등으로 그대로 쓸 수 있다.
-- **감성 레이어**: `--gradient-cta`, `--gradient-planet-*` — 그라데이션. 시그니처 CTA는
-  로그인/온보딩/대시보드 핵심 진입점 5곳에만 반복 사용해 브랜드 인지를 형성하고,
-  나머지 버튼(채팅 전송, 설정 저장, 재도전 등)은 기능 레이어의 `accent`를 그대로 쓴다
-  — CTA를 아무 데나 쓰면 "하나의 시그니처"라는 의미가 희석된다.
+- **감성 레이어**: `--gradient-planet-*` — 그라데이션. "마음 지구" 오브젝트, 카테고리
+  태그, 성취 하이라이트에만 남긴다.
+- 일반 CTA 버튼(로그인/온보딩/채팅 전송/설정 저장 등)은 전부 기능 레이어의 `.cta-neutral`
+  (ink/surface 반전)을 쓴다 — 2026-07-21 UI/UX 패스에서 시그니처 CTA 그라데이션을
+  폐기하고 버튼류는 감성 레이어를 쓰지 않기로 결정했다.
 
 `MindPlanet.jsx`는 `<html data-theme>`와 같은 관례를 컴포넌트 스코프로 재사용한다:
 JS는 `data-planet-stage`(`seed`/`growing`/`flourishing`)와 `data-planet-category`
@@ -94,7 +95,7 @@ hex/대비 확정 전 PLACEHOLDER — `src/index.css` 상단 주석 참고.)
   약해 보이는" 비대칭이 있었다 — red-300 대신 red-400을 써서 L71%로 맞췄다. 상태색을
   추가/수정할 때는 반드시 [contrast.js](#5-검증-방법)로 셋의 명도를 나란히 확인한다.
 
-### 원칙 D — 고대비 모드(포용성 모드)
+### 원칙 D — 고대비 모드(UI 노출명: 접근성 모드)
 
 - AAA(7:1) 이상을 목표로 하는 고정 1종 룩. 배경은 `#0a0a0a`(완전한 `#000`이 아님 —
   대비비 손실은 사실상 없고 화면이 "뚫린 듯" 보이는 것만 방지).
@@ -243,10 +244,11 @@ hex/대비 확정 전 PLACEHOLDER — `src/index.css` 상단 주석 참고.)
 5. 색약 보정 오버라이드가 새 브랜드색과 우연히 겹치지 않는지 재검토(예: 브랜드색이
    파랑 계열이 되면 적록색약 오버라이드의 "success=파랑"과 충돌 가능)
 6. 카카오 로그인 버튼(`#FEE500`)은 브랜드 규정색이라 무관하게 그대로 둔다
-7. `--gradient-cta`/`--color-cta-on`(시그니처 CTA)과 `--gradient-planet-*`("마음 지구")도
-   함께 재검토. 고대비 모드의 `--gradient-planet-growing`/`-flourishing`은 색상이 아니라
-   명도 3단계만 써야 하므로(§1a, 기획서 §6.2), `--color-ink-faint`/`--color-ink` 같은
-   무채색 명도 토큰만 참조하도록 유지할 것
+7. `--gradient-planet-*`("마음 지구")도 함께 재검토. 고대비 모드의
+   `--gradient-planet-growing`/`-flourishing`은 색상이 아니라 명도 3단계만 써야
+   하므로(§1a, 기획서 §6.2), `--color-ink-faint`/`--color-ink` 같은 무채색 명도
+   토큰만 참조하도록 유지할 것. `.cta-neutral`은 `--color-ink`/`--color-surface`를
+   참조하므로 브랜드 컬러 교체와 무관하다
 
 ## 7. 실제 참고 사례
 
