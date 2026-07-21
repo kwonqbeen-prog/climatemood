@@ -3,19 +3,18 @@ import Icon from './Icon'
 import IconButton from './IconButton'
 import MindPlanet from './MindPlanet'
 import TabSwitcher from './TabSwitcher'
-import { getCompletedHistory, getTodayCompletedCount, getTodayMissions, getTotalCompletedCount } from '../data/storage'
+import { getTodayCompletedCount, getTodayMissions, getTotalCompletedCount } from '../data/storage'
 
 async function loadStats() {
-  const [todayMissions, todayCompleted, total, history] = await Promise.all([
+  const [todayMissions, todayCompleted, total] = await Promise.all([
     getTodayMissions(),
     getTodayCompletedCount(),
     getTotalCompletedCount(),
-    getCompletedHistory(),
   ])
-  return { todayMissions, todayCompleted, total, history }
+  return { todayMissions, todayCompleted, total }
 }
 
-const EMPTY_STATS = { todayMissions: [], todayCompleted: 0, total: 0, history: [] }
+const EMPTY_STATS = { todayMissions: [], todayCompleted: 0, total: 0 }
 
 export default function DashboardScreen({ activeTab, onTabChange, onSignOut, onOpenSettings, onViewMissions }) {
   const [stats, setStats] = useState(EMPTY_STATS)
@@ -45,7 +44,7 @@ export default function DashboardScreen({ activeTab, onTabChange, onSignOut, onO
       </header>
 
       <div className="relative min-h-[45vh] flex-1">
-        <MindPlanet totalCompleted={stats.total} history={stats.history} />
+        <MindPlanet totalCompleted={stats.total} />
       </div>
 
       <div className="space-y-4 px-4 pb-6 pt-2">
@@ -66,7 +65,7 @@ export default function DashboardScreen({ activeTab, onTabChange, onSignOut, onO
         <button
           type="button"
           onClick={onViewMissions}
-          className="w-full rounded-2xl border border-line bg-surface-alt px-4 py-3 text-left transition hover:border-accent active:scale-[0.99]"
+          className="w-full rounded-2xl bg-surface-alt px-4 py-3 text-left transition hover:bg-accent-soft active:scale-[0.99]"
         >
           <span className="block text-xs font-medium text-ink-muted">이런 미션도 있어요</span>
           <span className="mt-0.5 flex items-center gap-1.5 text-lg font-extrabold text-accent">

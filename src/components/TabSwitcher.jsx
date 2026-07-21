@@ -7,7 +7,7 @@ export default function TabSwitcher({ active, onChange }) {
   const activeIndex = Math.max(0, TABS.findIndex((tab) => tab.key === active))
 
   return (
-    <div role="tablist" aria-label="화면 전환" className="relative inline-flex rounded-full border border-line bg-surface-sunken p-1">
+    <div role="tablist" aria-label="화면 전환" className="relative inline-flex rounded-full bg-surface-sunken p-1">
       <span
         aria-hidden="true"
         className="absolute inset-y-1 rounded-full bg-surface-alt shadow-sm transition-transform duration-300 ease-out"

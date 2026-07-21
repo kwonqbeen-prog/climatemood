@@ -8,7 +8,7 @@ export default function ThemeToggleSwitch({ isDark, onToggle, className = '' }) 
       aria-checked={isDark}
       aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
       onClick={onToggle}
-      className={`relative h-7 w-12 shrink-0 rounded-full border border-line bg-surface-sunken transition ${className}`}
+      className={`relative h-7 w-12 shrink-0 rounded-full bg-surface-sunken transition ${className}`}
     >
       <span
         className={`absolute top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-surface-alt shadow-sm transition-all ${

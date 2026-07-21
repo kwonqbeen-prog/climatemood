@@ -9,10 +9,8 @@ export default function MissionCard({ mission, onClick }) {
     <button
       type="button"
       onClick={() => onClick(mission)}
-      className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition active:scale-[0.99] ${
-        mission.isCompleted
-          ? 'border-line bg-surface-sunken opacity-70'
-          : 'border-line bg-surface-alt hover:border-accent'
+      className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition active:scale-[0.99] ${
+        mission.isCompleted ? 'bg-surface-sunken opacity-70' : 'bg-surface-alt hover:bg-accent-soft'
       }`}
     >
       <span className="flex-1 min-w-0">

@@ -17,7 +17,7 @@ const COLORBLIND_CHOICES = [
 
 function ToggleRow({ label, description, checked, onChange }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-3">
+    <div className="flex items-center justify-between gap-4 rounded-xl bg-surface-alt p-3">
       <div className="min-w-0">
         <p className="text-sm font-semibold text-ink">{label}</p>
         {description && <p className="mt-0.5 text-xs text-ink-muted">{description}</p>}
@@ -28,12 +28,12 @@ function ToggleRow({ label, description, checked, onChange }) {
         aria-checked={checked}
         aria-label={label}
         onClick={() => onChange(!checked)}
-        className={`relative h-7 w-12 shrink-0 rounded-full border border-line transition ${
+        className={`relative h-7 w-12 shrink-0 rounded-full transition ${
           checked ? 'bg-accent' : 'bg-surface-sunken'
         }`}
       >
         <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface-alt shadow-sm transition-all ${
+          className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-surface-alt shadow-sm transition-all ${
             checked ? 'left-6' : 'left-0.5'
           }`}
         />
@@ -66,8 +66,8 @@ export default function SettingsScreen({ onBack }) {
             return (
               <label
                 key={choice.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition ${
-                  checked ? 'border-accent bg-accent-soft' : 'border-line bg-surface-alt'
+                className={`flex cursor-pointer items-center gap-3 rounded-xl p-3 transition ${
+                  checked ? 'bg-accent-soft' : 'bg-surface-alt'
                 }`}
               >
                 <input
@@ -88,8 +88,8 @@ export default function SettingsScreen({ onBack }) {
 
       <section className="mt-8">
         <h2 className="mb-3 text-sm font-bold text-ink">세부 조정</h2>
-        <div className="rounded-xl border border-line bg-surface-alt px-4">
-          <div className="border-b border-line py-3">
+        <div className="space-y-2">
+          <div className="rounded-xl bg-surface-alt p-3">
             <label htmlFor="colorblind" className="block text-sm font-semibold text-ink">
               색약 보정
             </label>
@@ -100,7 +100,7 @@ export default function SettingsScreen({ onBack }) {
               id="colorblind"
               value={settings.colorblind}
               onChange={(e) => setColorblind(e.target.value)}
-              className="mt-2 w-full rounded-lg border border-line-input bg-surface-alt px-3 py-2 text-sm text-ink outline-none focus:border-accent"
+              className="mt-2 w-full rounded-lg bg-surface-sunken px-3 py-2 text-sm text-ink outline-none"
             >
               {COLORBLIND_CHOICES.map((c) => (
                 <option key={c.value} value={c.value}>
@@ -110,7 +110,7 @@ export default function SettingsScreen({ onBack }) {
             </select>
           </div>
 
-          <div className="border-b border-line py-3">
+          <div className="rounded-xl bg-surface-alt p-3">
             <div className="flex items-center justify-between">
               <label htmlFor="font-scale" className="text-sm font-semibold text-ink">
                 글자 크기

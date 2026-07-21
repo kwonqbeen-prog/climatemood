@@ -29,7 +29,7 @@ export default function NicknameScreen({ auth }) {
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
           placeholder="예: 규빈"
-          className="w-full rounded-lg border border-line-input bg-surface-alt px-4 py-3 text-sm text-ink outline-none focus:border-accent"
+          className="w-full rounded-lg bg-surface-sunken px-4 py-3 text-sm text-ink outline-none"
         />
         {auth.authError && <p className="mt-2 text-xs font-medium text-danger">{auth.authError}</p>}
         <button

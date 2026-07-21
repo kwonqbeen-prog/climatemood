@@ -45,7 +45,7 @@ export default function MissionListScreen({ onBack }) {
           <h2 className="mb-2 text-sm font-bold text-ink">이런 미션 어때요?</h2>
           <div className="space-y-2">
             {data.incomplete.map((mission) => (
-              <div key={mission.id} className="flex items-center gap-3 rounded-xl border border-line bg-surface-alt p-3">
+              <div key={mission.id} className="flex items-center gap-3 rounded-xl bg-surface-alt p-3">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold text-ink">{mission.title}</p>
                   <p className="text-xs text-accent">{mission.category}</p>
@@ -67,13 +67,13 @@ export default function MissionListScreen({ onBack }) {
       <section>
         <h2 className="mb-2 text-sm font-bold text-ink">완료한 미션 히스토리</h2>
         {data.history.length === 0 ? (
-          <p className="rounded-xl border border-line bg-surface-alt p-4 text-center text-sm text-ink-muted">
+          <p className="rounded-xl bg-surface-alt p-4 text-center text-sm text-ink-muted">
             아직 완료한 미션이 없어요. 대화를 시작해보세요!
           </p>
         ) : (
           <div className="space-y-2">
             {data.history.map((mission) => (
-              <div key={mission.id} className="flex items-center gap-3 rounded-xl border border-line bg-surface-alt p-3">
+              <div key={mission.id} className="flex items-center gap-3 rounded-xl bg-surface-alt p-3">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold text-ink">{mission.title}</p>
                   <p className="text-xs text-ink-muted">

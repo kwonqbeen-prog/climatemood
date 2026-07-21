@@ -1,27 +1,8 @@
-import { CATEGORIES, CATEGORY_META } from '../data/constants'
-
 // 임계값은 조정 가능한 PLACEHOLDER — 실제 성장 곡선은 후속 컬러/밸런싱 세션에서 튜닝
 function getStage(totalCompleted) {
   if (totalCompleted === 0) return 'seed'
   if (totalCompleted < 5) return 'growing'
   return 'flourishing'
-}
-
-function getDominantCategory(history) {
-  const counts = {}
-  for (const mission of history) {
-    counts[mission.category] = (counts[mission.category] ?? 0) + 1
-  }
-  let best = CATEGORIES[0]
-  let bestCount = -1
-  for (const category of CATEGORIES) {
-    const count = counts[category] ?? 0
-    if (count > bestCount) {
-      best = category
-      bestCount = count
-    }
-  }
-  return best
 }
 
 // 정적 배경 장식 — 화면 전체에 흩뿌려진 별. 랜덤 생성이 아니라 고정 좌표라
@@ -46,10 +27,8 @@ const STARS = [
   { top: '90%', left: '80%', size: 5, shape: 'dot' },
 ]
 
-export default function MindPlanet({ totalCompleted, history }) {
+export default function MindPlanet({ totalCompleted }) {
   const stage = getStage(totalCompleted)
-  const dominantCategory = getDominantCategory(history)
-  const categorySlug = CATEGORY_META[dominantCategory]?.slug ?? 'life'
 
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -61,11 +40,7 @@ export default function MindPlanet({ totalCompleted, history }) {
         />
       ))}
       <div className="flex h-full items-center justify-center">
-        <div
-          className="mind-planet__orb h-56 w-56 rounded-full sm:h-64 sm:w-64"
-          data-planet-stage={stage}
-          data-planet-category={categorySlug}
-        />
+        <div className="mind-planet__orb h-56 w-56 rounded-full sm:h-64 sm:w-64" data-planet-stage={stage} />
       </div>
     </div>
   )

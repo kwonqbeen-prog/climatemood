@@ -12,7 +12,7 @@ export default function MissionModal({ mission, onClose, onComplete }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-sm rounded-2xl border border-line bg-surface-alt p-6 shadow-[var(--shadow-modal)] animate-pop-in"
+        className="relative w-full max-w-sm rounded-2xl bg-surface-alt p-6 shadow-[var(--shadow-modal)] animate-pop-in"
         onClick={(e) => e.stopPropagation()}
       >
         <IconButton
@@ -40,7 +40,7 @@ export default function MissionModal({ mission, onClose, onComplete }) {
                   key={opt}
                   type="button"
                   onClick={() => onComplete(mission.id, opt)}
-                  className="flex-1 rounded-lg border border-line py-2 text-sm font-semibold text-ink-muted hover:border-accent hover:text-accent"
+                  className="flex-1 rounded-lg bg-surface-sunken py-2 text-sm font-semibold text-ink-muted hover:bg-accent-soft hover:text-accent"
                 >
                   {opt}
                 </button>

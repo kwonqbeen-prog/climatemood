@@ -42,7 +42,7 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
 
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-surface">
-      <header className="sticky top-0 z-30 flex items-center justify-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
+      <header className="sticky top-0 z-30 flex items-center justify-center bg-surface-alt/95 px-4 py-3 backdrop-blur">
         <TabSwitcher active={activeTab} onChange={onTabChange} />
         <div className="absolute right-4 top-1/2 -translate-y-1/2">
           <ThemeToggleSwitch isDark={resolvedTheme === 'dark'} onToggle={toggleQuickTheme} />
@@ -79,13 +79,13 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
           e.preventDefault()
           handleSend(input)
         }}
-        className="border-t border-line bg-surface-alt px-3 py-3"
+        className="bg-surface-alt px-3 py-3"
       >
         {showMissionOffer && (
           <button
             type="button"
             onClick={requestMissionFlow}
-            className="mb-2 flex w-full items-center gap-2 rounded-xl border border-accent/50 bg-accent-soft px-4 py-3 text-left transition active:scale-[0.99]"
+            className="mb-2 flex w-full items-center gap-2 rounded-xl bg-accent-soft px-4 py-3 text-left transition active:scale-[0.99]"
           >
             <Icon name="auto_awesome" className="text-lg text-accent" />
             <span className="flex-1 text-sm font-bold text-ink">오늘의 맞춤 미션 받기</span>
@@ -99,7 +99,7 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
                 key={`${chip}-${i}`}
                 type="button"
                 onClick={() => handleSend(chip)}
-                className="rounded-full border border-line bg-surface-alt px-3 py-1.5 text-xs font-semibold text-ink-muted transition hover:border-accent hover:text-accent active:scale-95"
+                className="rounded-full bg-surface-sunken px-3 py-1.5 text-xs font-semibold text-ink-muted transition hover:bg-accent-soft hover:text-accent active:scale-95"
               >
                 {chip}
               </button>
@@ -112,7 +112,7 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
             onChange={(e) => setInput(e.target.value)}
             placeholder={todayMissionExists ? '마음을 편하게 적어보세요' : '오늘 하루는 어떠셨나요?'}
             disabled={loading}
-            className="flex-1 rounded-full border border-line-input bg-surface-alt px-4 py-2.5 text-sm text-ink outline-none focus:border-accent disabled:bg-surface-sunken"
+            className="flex-1 rounded-full bg-surface-sunken px-4 py-2.5 text-sm text-ink outline-none disabled:opacity-60"
           />
           <IconButton
             type="submit"

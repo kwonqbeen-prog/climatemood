@@ -10,110 +10,101 @@
   고대비 모드는 AAA(7:1) 이상을 목표로 한 별도 고정 팔레트(검정 배경 + 흰/노랑)다.
 
   2026-07-21 "지구 마음" 리브랜딩(구조 우선 패스)으로 2계층 컬러 구조로 전환:
-  - 기능 레이어(UI 골격): --color-accent* — 예전엔 브랜드 초록이었지만, 지금은 저채도
-    웜뉴트럴(테라코타 계열)로, 포커스 링/탭 상태/입력 포커스 등 "구조적 강조"만 담당.
-    아래 hex 값은 전부 PLACEHOLDER — 정확한 값과 대비 검증은 후속 컬러 확정 세션에서 진행.
+  - 기능 레이어(UI 골격): --color-accent* — 포커스 링/탭 상태/입력 포커스 등 "구조적 강조"만 담당.
   - 감성 레이어(그라데이션): --gradient-planet-*("마음 지구" 대시보드 오브젝트 상태별
     그라데이션, MindPlanet.jsx가 소비)로 구성. Tailwind 유틸 클래스는 그라데이션 값을
     담을 수 없어서 .mind-planet__orb 같은 순수 CSS 클래스로 노출한다(하단 참고).
 
   2026-07-21 UI/UX 수정 패스로 시그니처 CTA 그라데이션(--gradient-cta/--color-cta-on/
   .cta-gradient)은 폐기했다. 일반 CTA 버튼은 전부 .cta-neutral(기능 레이어, ink/surface
-  반전)을 쓰고, 그라데이션은 "마음 지구" 오브젝트와 카테고리 태그/성취 하이라이트에만
-  남긴다. .cta-neutral은 --color-ink를 배경, --color-surface를 텍스트로 써서 라이트(짙은
-  배경+흰 텍스트)/다크(밝은 배경+짙은 텍스트) 반전이 토큰 자체에서 자동으로 나온다 —
-  별도 다크 오버라이드가 필요 없음.
+  반전)을 쓰고, 그라데이션은 "마음 지구" 오브젝트에만 남긴다. .cta-neutral은 --color-ink를
+  배경, --color-surface를 텍스트로 써서 라이트(짙은 배경+흰 텍스트)/다크(밝은 배경+짙은
+  텍스트) 반전이 토큰 자체에서 자동으로 나온다 — 별도 다크 오버라이드가 필요 없음.
 
-  브랜드 컬러(현재 코랄/앰버 방향)를 다시 바꾸게 되면 손대야 할 곳:
-  1. tailwind.config.js의 brand 색상 램프를 새 색상으로 교체
-  2. 아래 3개 테마 블록의 --color-accent/--color-accent-strong/--color-accent-soft/
-     --color-accent-on 값을 새 램프에서 골라 교체 (--color-success와 --color-focus-ring은
+  2026-07-21 두 번째 패스로 전체 색상을 웜뉴트럴(테라코타/코랄/앰버 계열)에서 순수
+  무채색(그레이 스케일)으로 전환하고, 박스 테두리(border)를 전부 제거해 배경 명도 차이
+  만으로 요소를 구분하도록 바꿨다. 재변경 시 손대야 할 곳:
+  1. 아래 3개 테마 블록의 --color-accent/--color-accent-strong/--color-accent-soft/
+     --color-accent-on 값 (--color-success와 --color-focus-ring은
      var(--color-accent...)를 참조하므로 자동으로 따라옴 — 새로 값을 넣지 말 것)
-  3. --color-highlight(보조 강조색, 현재 캐러멜색)는 accent와 독립적인 색이라 자동으로
-     안 바뀜 — 새 브랜드색과 어울리는지 디자인 판단 필요
-  4. ThemePreviewThumb.jsx의 SWATCHES는 3개 테마를 동시에 보여주는 미리보기 목업이라
+  2. --color-highlight(보조 강조색)는 accent와 독립적인 색이라 자동으로 안 바뀜
+  3. ThemePreviewThumb.jsx의 SWATCHES는 3개 테마를 동시에 보여주는 미리보기 목업이라
      CSS 변수를 못 쓰고 값을 하드코딩해뒀음 — 여기 값도 같이 바꿔야 함
-  5. 색약 보정 오버라이드(파랑/버밀리언/골드 계열)는 브랜드 색과 무관하게 설계했지만,
-     새 브랜드색이 하필 그 팔레트와 겹치면(예: 브랜드색이 파랑이 되는 경우) 재검토 필요
-  6. 카카오 로그인 버튼(#FEE500)은 카카오 브랜드 규정 색이라 무관하게 그대로 둘 것
-  7. --gradient-planet-*("마음 지구" 상태별 그라데이션, 카테고리 슬러그는
-     data/constants.js의 CATEGORY_META 참고)도 함께 재검토. 고대비 모드의
-     --gradient-planet-growing/-flourishing은 색상이 아니라 명도 3단계만 써야 하므로
-     (스펙 §6.2), 기존 --color-ink-faint/--color-ink를 그대로 재사용했다 — 새 브랜드색을
-     넣더라도 이 두 줄만은 무채색 명도 토큰을 계속 참조할 것
+  4. --color-danger/--color-warning과 색약 보정 오버라이드는 브랜드색이 아니라 기능적
+     상태색이라 의도적으로 무채색화 대상에서 제외했다 — 그대로 유지할 것
+  5. 카카오 로그인 버튼(#FEE500)은 카카오 브랜드 규정 색이라 무관하게 그대로 둘 것
+  6. --gradient-planet-*는 카테고리별 색상 구분을 폐기하고 seed/growing/flourishing
+     3단계를 모든 테마에서 --color-ink-faint/--color-ink 기반 무채색 명도 차이로만
+     표현한다(기존에는 고대비 모드에서만 이렇게 했음)
 */
 :root {
   color-scheme: light;
 
-  --color-surface: #faf9f7;
+  --color-surface: #f5f5f5;
   --color-surface-alt: #ffffff;
-  --color-surface-sunken: #f1efec;
-  --color-ink: #1c1917;
-  --color-ink-muted: #57534e;
-  --color-ink-faint: #a8a29e;
-  --color-line: #e7e5e4;
-  --color-line-input: #8a8580;
-  /* PLACEHOLDER: 저채도 테라코타 웜뉴트럴 — 정확한 대비 검증은 후속 세션에서 */
-  --color-accent: #8a5a4a;
-  --color-accent-strong: #6e4438;
-  --color-accent-soft: #f7ece7;
+  --color-surface-sunken: #e8e8e8;
+  --color-ink: #171717;
+  --color-ink-muted: #525252;
+  --color-ink-faint: #a3a3a3;
+  --color-line: #e0e0e0;
+  --color-line-input: #8a8a8a;
+  /* 무채색(다크 그레이) 톤 — 구조적 강조는 순수 그레이 스케일만 사용 */
+  --color-accent: #262626;
+  --color-accent-strong: #0a0a0a;
+  --color-accent-soft: #ececec;
   --color-accent-on: #ffffff;
-  --color-highlight: #8f4c24;
+  --color-highlight: #6b6b6b;
   --color-success: var(--color-accent-strong);
   --color-danger: #be123c;
   --color-warning: #92400e;
   --color-warning-soft: #fef7ed;
-  --color-disabled-bg: #e7e5e4;
-  --color-disabled-ink: #a8a29e;
+  --color-disabled-bg: #e0e0e0;
+  --color-disabled-ink: #a3a3a3;
   --color-focus-ring: var(--color-accent);
-  --shadow-modal: 0 20px 40px rgba(28, 25, 23, 0.18);
-  --line-width: 1px;
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.18);
   --focus-ring-width: 2px;
   --font-scale: 1;
   /* 배경 별 장식 요소 불투명도 — 색상을 --color-highlight로 바꾸면서 라이트 모드에서도
      잘 보이도록 상향 조정 (기존 0.35는 무채색 시절 값이라 너무 흐렸음) */
   --star-opacity: 0.6;
 
-  /* 감성 레이어: "마음 지구" 상태별 그라데이션 (PLACEHOLDER, 카테고리 매핑 미확정) */
-  --gradient-planet-seed: radial-gradient(circle at 35% 30%, #e5e3e0 0%, #b9b5b0 60%, #8f8b86 100%);
-  --gradient-planet-category-life: linear-gradient(160deg, #ff8a65, #ffb74d);
-  --gradient-planet-category-value: linear-gradient(160deg, #ff7a90, #ffab91);
-  --gradient-planet-category-mindfulness: linear-gradient(160deg, #ffab91, #ffd54f);
-  --gradient-planet-category-together: linear-gradient(160deg, #ff8a65, #ff7a90);
+  /* 감성 레이어: "마음 지구" 상태별 그라데이션. 카테고리별 색상 구분은 폐기하고
+     성장 단계(seed/growing/flourishing)만 무채색 명도 차이로 표현한다 */
+  --gradient-planet-seed: radial-gradient(circle at 35% 30%, #e8e8e8 0%, #b5b5b5 60%, #8a8a8a 100%);
+  --gradient-planet-growing: radial-gradient(circle, var(--color-ink-faint), #7a7a7a);
+  --gradient-planet-flourishing: radial-gradient(circle, var(--color-ink), #4d4d4d);
 }
 
 [data-theme='dark'] {
   color-scheme: dark;
 
   --color-surface: #121212;
-  --color-surface-alt: #1e1e1e;
-  --color-surface-sunken: #262625;
-  --color-ink: #f5f5f4;
-  --color-ink-muted: #a8a29e;
-  --color-ink-faint: #78716c;
-  --color-line: #33312f;
-  --color-line-input: #79746f;
-  /* PLACEHOLDER: 라이트와 같은 웜뉴트럴 계열을 다크 표면에 맞게 재튜닝 */
-  --color-accent: #d8a08e;
-  --color-accent-strong: #e8b7a6;
-  --color-accent-soft: #3a2620;
-  --color-accent-on: #1c1310;
-  --color-highlight: #e4a274;
+  --color-surface-alt: #232323;
+  --color-surface-sunken: #323232;
+  --color-ink: #f5f5f5;
+  --color-ink-muted: #a3a3a3;
+  --color-ink-faint: #737373;
+  --color-line: #333333;
+  --color-line-input: #7a7a7a;
+  /* 무채색(라이트 그레이) 톤 — 라이트와 대칭되는 그레이 스케일 */
+  --color-accent: #d4d4d4;
+  --color-accent-strong: #ffffff;
+  --color-accent-soft: #2e2e2e;
+  --color-accent-on: #171717;
+  --color-highlight: #a3a3a3;
   --color-success: var(--color-accent-strong);
   --color-danger: #f87171;
   --color-warning: #fcd34d;
   --color-warning-soft: #2a2113;
-  --color-disabled-bg: #33312f;
-  --color-disabled-ink: #78716c;
+  --color-disabled-bg: #333333;
+  --color-disabled-ink: #737373;
   --color-focus-ring: var(--color-accent-strong);
   --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.55);
   --star-opacity: 0.7;
 
-  --gradient-planet-seed: radial-gradient(circle at 35% 30%, #6b6862, #45423e, #2a2825);
-  --gradient-planet-category-life: linear-gradient(160deg, #e8734f, #e8a23e);
-  --gradient-planet-category-value: linear-gradient(160deg, #e8657c, #e89685);
-  --gradient-planet-category-mindfulness: linear-gradient(160deg, #e89685, #e8bc3e);
-  --gradient-planet-category-together: linear-gradient(160deg, #e8734f, #e8657c);
+  --gradient-planet-seed: radial-gradient(circle at 35% 30%, #6b6b6b, #454545, #2a2a2a);
+  --gradient-planet-growing: radial-gradient(circle, var(--color-ink-faint), #999999);
+  --gradient-planet-flourishing: radial-gradient(circle, var(--color-ink), #d4d4d4);
 }
 
 /*
@@ -125,27 +116,26 @@
   않게 했다 — 대비비 손실은 사실상 없다(19.8:1). 전부 AAA(7:1) 이상(신규 PLACEHOLDER
   값은 대비 재검증 전이라 예외).
 
-  "마음 지구" 성장 표현(§6.2)은 이 모드에서 색상이 아니라 명도 3단계로 대체해야 하므로,
-  --gradient-planet-growing/-flourishing은 카테고리와 무관하게 이미 AAA로 튜닝된
+  "마음 지구" 성장 표현(§6.2)은 이 모드에서도 다른 테마와 동일하게 색상이 아니라 명도
+  3단계로 표현하며, --gradient-planet-growing/-flourishing은 이미 AAA로 튜닝된
   --color-ink-faint/--color-ink 무채색 토큰만 재사용한다.
 */
 [data-theme='high-contrast'] {
   color-scheme: dark;
 
   --color-surface: #0a0a0a;
-  --color-surface-alt: #0a0a0a;
-  --color-surface-sunken: #141414;
+  --color-surface-alt: #1a1a1a;
+  --color-surface-sunken: #262626;
   --color-ink: #ffffff;
   --color-ink-muted: #ffffff;
   --color-ink-faint: #c7c7c7;
   --color-line: #ffffff;
   --color-line-input: #ffffff;
-  /* PLACEHOLDER */
-  --color-accent: #ffb199;
-  --color-accent-strong: #ffc7b3;
-  --color-accent-soft: #2a1712;
+  --color-accent: #d4d4d4;
+  --color-accent-strong: #ffffff;
+  --color-accent-soft: #262626;
   --color-accent-on: #0a0a0a;
-  --color-highlight: #ffc773;
+  --color-highlight: #e5e5e5;
   --color-success: var(--color-accent);
   --color-danger: #ff8f80;
   --color-warning: #ffc773;
@@ -154,7 +144,6 @@
   --color-disabled-ink: #808080;
   --color-focus-ring: var(--color-accent);
   --shadow-modal: none;
-  --line-width: 2px;
   --focus-ring-width: 4px;
   --star-opacity: 0.6;
 
@@ -226,11 +215,6 @@
   font-weight: 900;
 }
 
-/* 고대비 모드: 테두리를 굵게, 포커스 아웃라인을 기본 대비 2배로 */
-[data-theme='high-contrast'] .border {
-  border-width: 2px;
-}
-
 :focus-visible {
   outline: var(--focus-ring-width) solid var(--color-focus-ring);
   outline-offset: 2px;
@@ -289,10 +273,6 @@ body {
   background-color: var(--color-ink);
   color: var(--color-surface);
 }
-[data-theme='high-contrast'] .cta-neutral {
-  border: 2px solid var(--color-ink);
-}
-
 /* 배경 장식용 별 — 정적 요소, 테마별 --star-opacity로 은은함 정도만 조절.
    색상은 --color-ink-faint(무채색)가 아니라 --color-highlight(테마별로 이미 대비 검증된
    보조 강조색)를 써서 배경과 뚜렷하게 구분되게 한다. 원형(dot)/사각별(sparkle) 두 형태와
@@ -331,41 +311,10 @@ body {
   filter: blur(28px) brightness(1.3) saturate(1.1);
   opacity: 0.6;
 }
-.mind-planet__orb[data-planet-stage='growing'][data-planet-category='life'] {
-  background-image: var(--gradient-planet-category-life);
+/* 카테고리 구분 없이 성장 단계만 무채색 명도 차이로 표현 (모든 테마 공통) */
+.mind-planet__orb[data-planet-stage='growing'] {
+  background-image: var(--gradient-planet-growing);
 }
-.mind-planet__orb[data-planet-stage='growing'][data-planet-category='value'] {
-  background-image: var(--gradient-planet-category-value);
-}
-.mind-planet__orb[data-planet-stage='growing'][data-planet-category='mindfulness'] {
-  background-image: var(--gradient-planet-category-mindfulness);
-}
-.mind-planet__orb[data-planet-stage='growing'][data-planet-category='together'] {
-  background-image: var(--gradient-planet-category-together);
-}
-.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='life'] {
-  background-image: var(--gradient-planet-category-life);
-  filter: brightness(1.15) saturate(1.1);
-}
-.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='value'] {
-  background-image: var(--gradient-planet-category-value);
-  filter: brightness(1.15) saturate(1.1);
-}
-.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='mindfulness'] {
-  background-image: var(--gradient-planet-category-mindfulness);
-  filter: brightness(1.15) saturate(1.1);
-}
-.mind-planet__orb[data-planet-stage='flourishing'][data-planet-category='together'] {
-  background-image: var(--gradient-planet-category-together);
-  filter: brightness(1.15) saturate(1.1);
-}
-
-/* 고대비: 카테고리 무시, 명도 3단계만 (색상 변화 금지, 기획서 §6.2) */
-[data-theme='high-contrast'] .mind-planet__orb[data-planet-stage='growing'] {
-  background-image: var(--gradient-planet-growing) !important;
-  filter: none !important;
-}
-[data-theme='high-contrast'] .mind-planet__orb[data-planet-stage='flourishing'] {
-  background-image: var(--gradient-planet-flourishing) !important;
-  filter: none !important;
+.mind-planet__orb[data-planet-stage='flourishing'] {
+  background-image: var(--gradient-planet-flourishing);
 }

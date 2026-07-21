@@ -41,8 +41,8 @@ export default function ThemeOnboardingScreen({ onDone }) {
             return (
               <label
                 key={choice.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition ${
-                  checked ? 'border-accent bg-accent-soft' : 'border-line bg-surface-alt'
+                className={`flex cursor-pointer items-center gap-3 rounded-xl p-3 transition ${
+                  checked ? 'bg-accent-soft' : 'bg-surface-alt'
                 }`}
               >
                 <input

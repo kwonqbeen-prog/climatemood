@@ -30,12 +30,12 @@ export default function AuthScreen({ auth }) {
         </div>
         <p className="mt-1 text-center text-xs text-ink-muted">마음을 돌보다, 지구를 돌보다</p>
 
-        <div className="mt-8 flex border-b border-line">
+        <div className="mt-8 flex gap-1 rounded-full bg-surface-sunken p-1">
           <button
             type="button"
             onClick={() => setMode('login')}
-            className={`flex-1 border-b-2 py-2.5 text-sm font-bold transition ${
-              mode === 'login' ? 'border-accent text-ink' : 'border-transparent text-ink-muted'
+            className={`flex-1 rounded-full py-2.5 text-sm font-bold transition ${
+              mode === 'login' ? 'bg-surface-alt text-ink shadow-sm' : 'text-ink-muted'
             }`}
           >
             로그인
@@ -43,8 +43,8 @@ export default function AuthScreen({ auth }) {
           <button
             type="button"
             onClick={() => setMode('signup')}
-            className={`flex-1 border-b-2 py-2.5 text-sm font-bold transition ${
-              mode === 'signup' ? 'border-accent text-ink' : 'border-transparent text-ink-muted'
+            className={`flex-1 rounded-full py-2.5 text-sm font-bold transition ${
+              mode === 'signup' ? 'bg-surface-alt text-ink shadow-sm' : 'text-ink-muted'
             }`}
           >
             회원가입
@@ -62,7 +62,7 @@ export default function AuthScreen({ auth }) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-line-input bg-surface-alt px-3 py-2.5 text-sm text-ink outline-none focus:border-accent"
+              className="mt-1 w-full rounded-lg bg-surface-sunken px-3 py-2.5 text-sm text-ink outline-none"
               placeholder="you@example.com"
             />
           </div>
@@ -77,7 +77,7 @@ export default function AuthScreen({ auth }) {
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-line-input bg-surface-alt px-3 py-2.5 text-sm text-ink outline-none focus:border-accent"
+              className="mt-1 w-full rounded-lg bg-surface-sunken px-3 py-2.5 text-sm text-ink outline-none"
               placeholder="6자 이상"
             />
           </div>
@@ -100,10 +100,8 @@ export default function AuthScreen({ auth }) {
           </button>
         </form>
 
-        <div className="mt-5 flex items-center gap-2">
-          <div className="h-px flex-1 bg-line" />
+        <div className="mt-5 text-center">
           <span className="text-xs text-ink-muted">또는</span>
-          <div className="h-px flex-1 bg-line" />
         </div>
 
         <button
