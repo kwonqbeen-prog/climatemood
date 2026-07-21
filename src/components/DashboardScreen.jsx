@@ -26,9 +26,10 @@ export default function DashboardScreen({ activeTab, onTabChange, onSignOut, onO
 
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-surface">
-      <header className="relative flex items-center justify-center px-4 py-3">
+      <header className="flex items-center gap-3 px-4 py-3">
+        <div className="flex-1" />
         <TabSwitcher active={activeTab} onChange={onTabChange} />
-        <div className="absolute right-4 flex items-center gap-3">
+        <div className="flex flex-1 items-center justify-end gap-3">
           <IconButton
             icon="settings"
             label="화면 및 접근성"
@@ -44,7 +45,7 @@ export default function DashboardScreen({ activeTab, onTabChange, onSignOut, onO
         </div>
       </header>
 
-      <div className="relative min-h-[45vh] flex-1">
+      <div className="relative min-h-[260px] flex-1">
         <MindPlanet totalCompleted={stats.total} history={stats.history} />
       </div>
 
@@ -71,7 +72,7 @@ export default function DashboardScreen({ activeTab, onTabChange, onSignOut, onO
           <span className="block text-xs font-medium text-ink-muted">이런 미션도 있어요</span>
           <span className="mt-0.5 flex items-center gap-1.5 text-lg font-extrabold text-accent">
             미션 구경하기
-            <Icon name="arrow_forward" className="text-xl" />
+            <Icon name="arrow_forward" className="shrink-0 text-xl" />
           </span>
         </button>
       </div>

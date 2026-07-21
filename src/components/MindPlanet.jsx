@@ -61,7 +61,7 @@ export default function MindPlanet({ totalCompleted, history }) {
       ))}
       <div className="flex h-full items-center justify-center">
         <div
-          className="mind-planet__orb h-56 w-56 rounded-full sm:h-64 sm:w-64"
+          className="mind-planet__orb aspect-square w-[min(56vw,40vh,260px)] rounded-full"
           data-planet-stage={stage}
           data-planet-category={categorySlug}
         />

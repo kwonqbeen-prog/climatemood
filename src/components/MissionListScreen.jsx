@@ -30,14 +30,17 @@ export default function MissionListScreen({ onBack }) {
 
   return (
     <div className="min-h-svh flex-1 space-y-6 bg-surface px-4 py-6">
-      <header className="relative flex items-center justify-center pb-2 text-center">
-        <IconButton
-          icon="arrow_back"
-          label="뒤로가기"
-          onClick={onBack}
-          className="absolute left-0 text-ink-muted transition hover:text-ink"
-        />
-        <h1 className="text-lg font-bold text-ink">미션 구경하기</h1>
+      <header className="flex items-center gap-3 pb-2">
+        <div className="flex flex-1 justify-start">
+          <IconButton
+            icon="arrow_back"
+            label="뒤로가기"
+            onClick={onBack}
+            className="text-ink-muted transition hover:text-ink"
+          />
+        </div>
+        <h1 className="shrink-0 text-center text-lg font-bold text-ink">미션 구경하기</h1>
+        <div className="flex-1" />
       </header>
 
       {data.incomplete.length > 0 && (

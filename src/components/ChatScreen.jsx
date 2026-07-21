@@ -42,13 +42,12 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
 
   return (
     <div className="flex min-h-svh flex-1 flex-col bg-surface">
-      <header className="sticky top-0 z-30 flex items-center justify-center border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
+      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-surface-alt/95 px-4 py-3 backdrop-blur">
+        <div className="flex-1" />
         <TabSwitcher active={activeTab} onChange={onTabChange} />
-        <ThemeToggleSwitch
-          isDark={resolvedTheme === 'dark'}
-          onToggle={toggleQuickTheme}
-          className="absolute right-4"
-        />
+        <div className="flex flex-1 justify-end">
+          <ThemeToggleSwitch isDark={resolvedTheme === 'dark'} onToggle={toggleQuickTheme} />
+        </div>
       </header>
 
       {apiDegraded && (
@@ -89,9 +88,9 @@ export default function ChatScreen({ conv, activeTab, onTabChange }) {
             onClick={requestMissionFlow}
             className="mb-2 flex w-full items-center gap-2 rounded-xl border border-accent/50 bg-accent-soft px-4 py-3 text-left transition active:scale-[0.99]"
           >
-            <Icon name="auto_awesome" className="text-lg text-accent" />
-            <span className="flex-1 text-sm font-bold text-ink">오늘의 맞춤 미션 받기</span>
-            <Icon name="arrow_forward" className="text-base text-accent" />
+            <Icon name="auto_awesome" className="shrink-0 text-lg text-accent" />
+            <span className="min-w-0 flex-1 text-sm font-bold text-ink">오늘의 맞춤 미션 받기</span>
+            <Icon name="arrow_forward" className="shrink-0 text-base text-accent" />
           </button>
         )}
         {activeChips.length > 0 && (

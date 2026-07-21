@@ -58,7 +58,7 @@ function App() {
 
   if (auth.loading) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-surface">
+      <div className="mx-auto flex min-h-svh w-full max-w-[480px] items-center justify-center bg-surface md:border-x md:border-line">
         <Icon name="progress_activity" className="animate-spin text-3xl text-ink-faint" />
       </div>
     )
@@ -66,7 +66,9 @@ function App() {
 
   return (
     <ThemeProvider auth={auth}>
-      {!auth.user ? <AuthScreen auth={auth} /> : <AppShell auth={auth} />}
+      <div className="mx-auto w-full max-w-[480px] md:border-x md:border-line">
+        {!auth.user ? <AuthScreen auth={auth} /> : <AppShell auth={auth} />}
+      </div>
     </ThemeProvider>
   )
 }

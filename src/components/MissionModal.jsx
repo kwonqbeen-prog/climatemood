@@ -12,7 +12,7 @@ export default function MissionModal({ mission, onClose, onComplete }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-sm rounded-2xl border border-line bg-surface-alt p-6 shadow-[var(--shadow-modal)] animate-pop-in"
+        className="relative w-full max-w-sm overflow-y-auto rounded-2xl border border-line bg-surface-alt p-6 shadow-[var(--shadow-modal)] animate-pop-in max-h-[85vh]"
         onClick={(e) => e.stopPropagation()}
       >
         <IconButton
