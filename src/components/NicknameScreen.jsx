@@ -35,7 +35,7 @@ export default function NicknameScreen({ auth }) {
         <button
           type="submit"
           disabled={submitting || !displayName.trim()}
-          className="cta-gradient mt-4 w-full rounded-xl py-3 text-sm font-bold transition active:scale-[0.99] disabled:opacity-50"
+          className="cta-neutral mt-4 w-full rounded-xl py-3 text-sm font-bold transition hover:opacity-90 active:scale-[0.99] disabled:opacity-50"
         >
           {submitting ? '저장 중...' : '시작하기'}
         </button>

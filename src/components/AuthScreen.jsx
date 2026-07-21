@@ -94,7 +94,7 @@ export default function AuthScreen({ auth }) {
           <button
             type="submit"
             disabled={submitting}
-            className="cta-gradient w-full rounded-xl py-3 text-sm font-bold transition active:scale-[0.99] disabled:opacity-50"
+            className="cta-neutral w-full rounded-xl py-3 text-sm font-bold transition hover:opacity-90 active:scale-[0.99] disabled:opacity-50"
           >
             {mode === 'login' ? '로그인' : '회원가입'}
           </button>

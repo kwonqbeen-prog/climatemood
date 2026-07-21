@@ -6,7 +6,7 @@ const THEME_CHOICES = [
   { value: 'light', label: '라이트 모드' },
   { value: 'dark', label: '다크 모드' },
   { value: 'system', label: '시스템 설정 따르기' },
-  { value: 'high-contrast', label: '고대비 모드 (포용성 모드)' },
+  { value: 'high-contrast', label: '접근성 모드' },
 ]
 
 const COLORBLIND_CHOICES = [
